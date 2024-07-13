@@ -1,0 +1,163 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background-color: #f0f1f4;
+  box-sizing: border-box;
+}
+
+html {
+  padding: 32px;
+}
+
+body {
+  flex: 1;
+  background-color: transparent !important;
+  border-radius: 8px;
+}
+
+.center-content,.centered  {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.centered {
+  flex-direction: column;
+}
+.centered {
+  text-align: center;
+}
+
+#deviceList {
+  margin-bottom: 20px;
+}
+
+#loading, #loadingIndicator, #stopScriptButton{
+  display: none;
+}
+
+pre {
+  background-color: rgba(0,0,0,.05);
+  border-radius: 6px;
+  color: #14141f !important;
+  font-family: "Public Sans", 'sans-serif';
+  font-weight: 500 !important;
+  line-height: 1.66 !important;
+  padding: .8rem 1rem;
+  white-space: pre-wrap;
+  margin-top: 1em;
+  width: auto; /* Allow the width to adjust based on content */
+  box-sizing: border-box; /* Include padding and border in the element's total width */
+  display: none;
+}
+
+.radio-input input {
+  display: none;
+}
+.title{
+  font-family: "Public Sans";
+  padding-bottom: 10px;
+}
+.radio-input {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  color: #000;
+  border-radius: 10px;
+  padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+}
+.emptyDevice{
+  font-family: "Public Sans";
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.14;
+  letter-spacing: normal;
+  text-align: center;
+  color: var(--gray-500);
+}
+
+.radio-item {
+  position: relative;
+}
+
+.radio-input label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 14px;
+  margin: 8px 0 0 0;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "Public Sans", 'sans-serif';
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid rgba(187, 187, 187, 0.164);
+  color: #000;
+  position: relative;
+}
+
+.radio-input label:hover {
+  border-color: var(--bs-link-color);
+  color:  var(--bs-link-color);
+}
+
+.radio-input input:checked + label {
+  border-color: var(--bs-link-color);
+  color:  var(--bs-link-color);
+}
+
+.order-number {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: center;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  font-size: 12px;
+  font-family: "Public Sans", sans-serif;
+  border: 1px solid rgba(187, 187, 187, 0.164);
+  border-radius: 50%;
+  color:  var(--bs-link-color);
+  background: transparent;
+}
+
+.radio-input input:checked + label .order-number,
+.radio-input label.selected .order-number {
+  border-color: var(--bs-link-color);
+  color: #fff;
+  background:  var(--bs-link-color);
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px; /* Adjust the value as needed */
+  list-style: none;
+  padding-left: 0; /* Remove default padding */
+}
+
+.pagination .page-item {
+  flex: 1;
+  text-align: center; /* Center align text */
+}
+
+.pagination .page-item .page-link {
+  display: block;
+  padding: 8px 16px; /* Adjust the padding as needed */
+  text-decoration: none;
+  color: #007bff; /* Bootstrap primary color */
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d; /* Bootstrap secondary color for disabled state */
+}
+
+.pagination .page-item:not(.disabled):hover .page-link {
+  text-decoration: underline; /* Optional hover effect */
+}
