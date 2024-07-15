@@ -20,7 +20,7 @@ class DocumentItem extends StatelessWidget{
         ));
       },
       child: Container(
-        height: 80,
+        height: 100,
         padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 12),
         decoration: BoxDecoration(
             border: Border.all(
@@ -30,12 +30,29 @@ class DocumentItem extends StatelessWidget{
         ),
         child: Row(
           children: [
-            Image.network(
-                document.imageUrl ?? ''
+            SizedBox(
+              width: 80,
+              height: 80,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4.0),
+                child: Image.network(
+                  document.imageUrl ?? '',
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
+                ),
+              )
             ),
-            const Spacer(),
-            Text(
-                document.displaySiteName ?? ''
+
+            Expanded(
+              child: Text(
+                  '출처 : ${document.displaySiteName ?? ''}',
+                maxLines: 1,
+                textAlign: TextAlign.right,
+              ),
+            ),
+            const SizedBox(
+              width: 4,
             ),
             InkWell(
               onTap: onTapFavoriteItem,
