@@ -35,7 +35,7 @@
         
         <div class="col-sm-6" id = "deviceArea">
           <div class="d-flex justify-content-between align-items-center">
-            <h6 class="mb-2">기기 선택</h6>
+            <h6 class="mb-0">기기 선택</h6>
             <div class="form-check" style="margin-bottom:0px">
               <label class="form-check-label ms-2" for="selectAllDevice" hidden>전체 선택</label>
             </div>
@@ -43,7 +43,10 @@
           <div class="mt-2">
             <form id="deviceForm" class="centered">
               <div id="noDevicesMessage" style="display: none;">연결된 기기가 없습니다.</div>
-              <div id="loading" class="spinner-border centered" style="display: none;" role="status">기기 탐색중</div>
+              <div id="loading" class="centered" style="display: none;" role="status">
+                <div class="spinner-border centered"></div>
+                <div class="loading-text">기기 탐색중</div>
+              </div>
               <div id="deviceList" class="radio-input"></div>
             </form>
           </div>
@@ -61,7 +64,7 @@
     <div style="height: 40px;"></div>
     <div class="spinner-border" role="status" id="loadingIndicator">
     </div>
-    <pre id="logOutput"></pre>
+    <pre id="logOutput" style="display: none;"></pre>
     
   </body>
 </html>

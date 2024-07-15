@@ -15,13 +15,6 @@ const loadingIndicator = document.getElementById('loadingIndicator');
 const stopScriptButton = document.getElementById('stopScriptButton');
 const preElement = document.querySelector('pre');
 
-const scriptDescriptions = new Map([
-    ['onboarding', '온보딩'],
-    ['sign_up', '회원가입'],
-    ['login', '로그인'],
-    ['make_single_challenge', '나혼자 챌린지 개설'],
-]);
-
 let selectedOrder = [];
 let orderCount = 0;
 let isScriptRunning = false;
@@ -216,6 +209,11 @@ function updatePaginationControls(totalPages) {
 //PC에 연결되어 있는 디바이스 목록 조회
 //Maestro는 IOS 실기기 빌드가 안되기 때문에 열려져 있는 Simulator만 가져오도록 설정
 function fetchDeviceList(){
+        const loadingElement = document.getElementById('loading');
+        const noDevicesMessage = document.getElementById('noDevicesMessage');
+        const scriptForm = document.getElementById('scriptForm');
+        const deviceForm = document.getElementById('deviceForm');
+        deviceForm.style.height = `${scriptForm.offsetHeight}px`;
         loadingElement.style.display = 'block';
         noDevicesMessage.style.display = 'none';
         fetch('/devices')
@@ -249,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scriptForm = document.getElementById('scriptForm');
     const deviceForm = document.getElementById('deviceForm');
     fetchScriptList(currentPage);
-    // fetchDeviceList();
+    fetchDeviceList();
     // Handle selection logic for both forms
     function handleFormClick(event, form) {
         if (event.target.name === 'script') {
