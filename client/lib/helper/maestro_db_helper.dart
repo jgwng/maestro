@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:client/model/documents.dart';
@@ -10,9 +11,11 @@ class MaestroDBHelper{
   static Database? _database;
   final String tableName = 'SavedDocuments';
 
-  Future<Database> get database async => _database ??= await initDB();
+  Future<Database?> get database async => _database ??= await initDB();
 
-  Future<Database> initDB() async {
+  Future<Database?> initDB() async {
+    if(kIsWeb) return null;
+
     String path = join(await getDatabasesPath(), 'SavedDocument.db');
     return await openDatabase(
         path,
@@ -38,6 +41,7 @@ class MaestroDBHelper{
   }
 
   Future<List<Document>> getDB() async {
+    if(kIsWeb) return [];
     final db = await database;
     final List<Map<String, dynamic>> maps = await db!.query(tableName);
     if( maps.isEmpty ) return [];
@@ -49,13 +53,17 @@ class MaestroDBHelper{
 
 
   Future<void> insert(Document document) async {
+    if(kIsWeb) return;
+
     final db = await database;
-    document.id = await db.insert(tableName, document.toJson());
+    document.id = await db!.insert(tableName, document.toJson());
   }
 
   Future<void> delete(Document document) async {
+    if(kIsWeb) return;
+
     final db = await database;
-    await db.delete(
+    await db!.delete(
       tableName,
       where: "id = ?",
       whereArgs: [document.id],

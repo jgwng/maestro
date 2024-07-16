@@ -26,6 +26,8 @@ class SearchDocumentController extends GetxController{
   }
 
   void onTapForSearch({bool isInit = false}) async{
+    print('BUTTON CLICK');
+
     if(isSearching.value == true) return;
 
     if(fieldController.text.isEmpty) return;
