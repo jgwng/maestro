@@ -242,8 +242,36 @@ function fetchDeviceList(){
                 checkDeviceList();
             });
 }
+function initModal(){
+    const modal = document.getElementById('TestScriptModal');
+  const testScriptButton = document.getElementById('testScriptButton');
+  const closeModal = document.getElementsByClassName('btn-close')[0];
+  const yamlEditor = document.getElementById('yamlEditor');
+  const testLogOutputArea = document.getElementById('testLogOutputArea');
+  const container = document.getElementById('container');
 
+  modal.style.display = 'none';
+  
+
+  testScriptButton.onclick = () => {
+    yamlEditor.value = ''; // Clear the yamlEditor
+    testLogOutputArea.innerText = ''; // Clear the testLogOutputArea
+    modal.style.display = 'block'; // Show the modal
+    testLogOutputArea.style.height = `${container.offsetHeight + 20}px`;
+  };
+
+  closeModal.onclick = () => {
+    modal.style.display = 'none'; // Hide the modal
+  };
+
+  window.onclick = (event) => {
+    if (event.target == modal) {
+      modal.style.display = 'none'; // Hide the modal if clicked outside
+    }
+  };
+}
 document.addEventListener('DOMContentLoaded', () => {
+    initModal();
     const scriptForm = document.getElementById('scriptForm');
     const deviceForm = document.getElementById('deviceForm');
     fetchScriptList(currentPage);

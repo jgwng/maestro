@@ -5,7 +5,6 @@ const app = express();
 const fs = require('fs');
 const port = 8080;
 
-
 app.use(express.static('web'));
 app.use(express.json());
 
@@ -28,9 +27,11 @@ app.get('/', (req, res) => {
 });
 const defaultFolders = [
   'test1', 'test2', 'test3', 'test4','test5',
-  'test6', 'test7', 'test8', 'test9','test10',
+  'test6', 'test7', 'test3', 'test4','test5',
 ];
-
+const deviceDescriptions = new Map([
+  
+]);
 // Endpoint to get the list of folders
 app.get('/folders', (req, res) => {
   // Extract pagination parameters from the query
@@ -103,6 +104,101 @@ app.get('/devices', async (req, res) => {
   }
 });
 
+app.post('/start_test_script', async (req, res) => {
+  if (studioProcess) {
+    return res.status(400).send('Script already running');
+  }
+
+  if (!deviceUUID) {
+    deviceUUID = await getConnectedDeviceUUID();
+    if (!deviceUUID) {
+      return res.status(400).send('No connected device found');
+    }
+  }
+
+  fs.writeFileSync(yamlPath, req.body);
+
+  const command = `maestro --device ${deviceUUID} test ${yamlPath}`;
+  studioProcess = exec(command);
+
+  logMessages = []; // Reset log messages
+
+  studioProcess.stdout.on('data', (data) => {
+    const lines = data.toString().split('\n').filter(line => line.trim() !== '');
+    lines.forEach(line => logMessages.push(line));
+  });
+
+  studioProcess.stderr.on('data', (data) => {
+    logMessages.push(`Maestro error: ${data.toString()}`);
+  });
+
+  studioProcess.on('close', (code) => {
+    logMessages.push(`Maestro process exited with code ${code}`);
+    logMessages.push('event: end'); // Signal end of script execution
+    studioProcess = null;
+  });
+
+  res.send('Script started');
+});
+
+app.get('/stream_logs', (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+
+  const sendLogMessages = () => {
+    logMessages.forEach((message) => {
+      res.write(`data: ${message}\n\n`);
+    });
+  };
+
+  sendLogMessages();
+
+  const intervalId = setInterval(() => {
+    sendLogMessages();
+    logMessages = []; // Clear sent messages
+  }, 1000);
+
+  req.on('close', () => {
+    clearInterval(intervalId);
+    res.end();
+  });
+});
+app.post('/stop_test_script', (req, res) => {
+  if (!studioProcess) {
+    return res.status(400).send('No script running');
+  }
+
+  studioProcess.kill();
+  studioProcess = null;
+
+  // Close WebSocket connection, delete screenshots folder, and delete script file
+  if (wsClient) {
+    wsClient.close();
+    wsClient = null;
+  }
+  console.log('Script stopped and cleaned up resources.');
+
+  res.send('Script stopped');
+});
+
+const getConnectedDeviceUUID = async () => {
+  try {
+    // Execute the 'adb devices' command
+    const adbDevicesOutput = await execCommand('adb devices');
+    // Parse the output to get a list of ADB devices with names
+    const adbDevices = adbDevicesOutput.split('\n')
+      .filter(line => line.includes('\tdevice'))
+      .map(line => {
+        const uuid = line.split('\t')[0];
+        return { uuid, name: uuid };
+      });
+    return adbDevices.length > 0 ? adbDevices[0].uuid : null;
+  } catch (error) {
+    console.error('Error getting connected devices:', error);
+    return null;
+  }
+};
 
 // Function to get the list of folders in a directory
 function getFolders(directory) {
@@ -110,7 +206,9 @@ function getFolders(directory) {
     return fs.statSync(path.join(directory, file)).isDirectory();
   });
 }
+
 // Start the server
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
