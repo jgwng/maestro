@@ -4,9 +4,20 @@ const { exec, spawn } = require('child_process');
 const app = express();
 const fs = require('fs');
 const port = 8080;
+const WebSocket = require('ws');
+const http = require('http');
 
 app.use(express.static('web'));
 app.use(express.json());
+app.use(express.text({ type: 'application/x-yaml' }));
+
+const yamlPath = path.join(__dirname, 'script.yaml');
+const server = http.createServer(app);
+
+let studioProcess = null;
+let deviceUUID = null;
+let wsClient = null;
+let logMessages = [];
 
 const execCommand = (command) => {
   return new Promise((resolve, reject) => {

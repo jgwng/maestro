@@ -12,8 +12,8 @@
 </head>
 
 <body>
-  <div class="title" >
-    <h4 class="page-title" >마에스트로 테스트 페이지</h2>
+  <div class="title">
+    <h4 class="page-title">마에스트로 테스트 페이지</h4>
   </div>
   <div class="card">
     <div class="card-header" style="background-color:white">테스트 설정</div>
@@ -33,7 +33,7 @@
           </div>
         </div>
         
-        <div class="col-sm-6" id = "deviceArea">
+        <div class="col-sm-6" id="deviceArea">
           <div class="d-flex justify-content-between align-items-center">
             <h6 class="mb-0">기기 선택</h6>
             <div class="form-check" style="margin-bottom:0px">
@@ -51,43 +51,41 @@
             </form>
           </div>
         </div>
-        
       </div>
     </div>
     <div class="card-footer text-center" style="background-color:white">
       <button id="showDevices" type="button" class="btn btn-outline-secondary">기기 검색</button>
       <button id="runScriptButton" type="button" class="btn btn-primary">스크립트 실행</button>
-      <button id="stopScriptButton" type="button" class="btn btn-primary">스크립트 중지</button> <!-- Added stop button -->
-      <button id="startStudioButton" type="button" class="btn  btn-primary">스튜디오 실행</button> <!-- Added stop button -->
-      <button id="testScriptButton" type="button" class="btn btn-primary" >스크립트 테스트</button>
+      <button id="stopScriptButton" type="button" class="btn btn-primary">스크립트 중지</button>
+      <button id="startStudioButton" type="button" class="btn btn-primary">스튜디오 실행</button>
+      <button id="testScriptButton" type="button" class="btn btn-primary">스크립트 테스트</button>
     </div>
   </div>
-    <div style="height: 40px;"></div>
-    <div class="spinner-border" role="status" id="loadingIndicator">
-    </div>
-    <pre id="logOutput" style="display: none;"></pre>
-       <!-- The Modal -->
- <div id="TestScriptModal" class="modal" style="background-color:rgba(0, 0, 0, 0.4);">
-  <div class="modal-content" style="max-width: 1200px;position:absolute;">
-    <div class="modal-header" >
-      <h5 class="modal-title">테스트 스크립트 작성</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-      <div id="container">
-        <div id="editor">
-          <textarea id="yamlEditor" placeholder="스크립트를 작성해주세요"></textarea>
-          <div id="controls">
-            <button id="startTestScriptButton">스크립트 시작</button>
-            <button id="stopTestScriptButton" disabled>스크립트 중지</button>
+  <div style="height: 40px;"></div>
+  <div class="spinner-border" role="status" id="loadingIndicator"></div>
+  <pre id="logOutput" style="display: none;"></pre>
+  <!-- The Modal -->
+  <div id="TestScriptModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">테스트 스크립트 작성</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="container">
+          <div id="editor">
+            <textarea id="yamlEditor" placeholder="스크립트를 작성해주세요"></textarea>
+            <div id="controls">
+              <button id="startTestScriptButton" class="btn btn-primary">스크립트 시작</button>
+              <button id="stopTestScriptButton" class="btn btn-primary" disabled>스크립트 중지</button>
+            </div>
           </div>
+          <pre id="testLogOutputArea"></pre>
         </div>
-        <pre id="testLogOutputArea"></pre>
       </div>
     </div>
   </div>
-</div>
-<script src="js/script.js"></script>
-<script src="js/modal.js"></script>
-  </body>
+  <script src="js/script.js"></script>
+  <script src="js/modal.js"></script>
+</body>
 </html>
