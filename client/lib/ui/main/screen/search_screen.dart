@@ -1,7 +1,13 @@
+import 'dart:convert';
+
+import 'package:client/util/semantic_identifier.dart';
+import 'package:client/util/test_util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:client/ui/main/widget/document_item.dart';
 import 'package:client/business_logic/search/search_controller.dart';
+import 'package:universal_html/html.dart';
+import 'package:universal_html/js.dart' as js;
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -9,11 +15,10 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-
   late SearchDocumentController controller;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     controller = Get.put<SearchDocumentController>(SearchDocumentController());
   }
@@ -32,7 +37,8 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
-  Widget searchBar(){
+
+  Widget searchBar() {
     return SizedBox(
       height: 60,
       child: Row(
@@ -41,24 +47,26 @@ class _SearchScreenState extends State<SearchScreen> {
             child: TextField(
               controller: controller.fieldController,
               focusNode: controller.node,
-              onSubmitted: (text){
+              onSubmitted: (text) {
                 controller.onTapForSearch(isInit: true);
               },
             ),
           ),
           ElevatedButton(
               onPressed: () => controller.onTapForSearch(isInit: true),
-              child: const Text('검색'))
+              child: const Text('검색')).toSemantic(
+              id: SemanticID.SEARCH_SCREEN_SEARCH_BUTTON,
+          ),
         ],
       ),
     );
   }
 
-  Widget searchResult(){
-    return  Expanded(
-      child: Obx((){
-        if(controller.isSearching.isTrue){
-          return const  Column(
+  Widget searchResult() {
+    return Expanded(
+      child: Obx(() {
+        if (controller.isSearching.isTrue) {
+          return const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -76,20 +84,20 @@ class _SearchScreenState extends State<SearchScreen> {
             ],
           );
         }
-        if(controller.searchWord.isEmpty){
+        if (controller.searchWord.isEmpty) {
           return const SizedBox();
         }
         return ListView.separated(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          itemBuilder: (ctx,index){
-            if(index == controller.documents.length){
-              if(controller.isEnd){
+          itemBuilder: (ctx, index) {
+            if (index == controller.documents.length) {
+              if (controller.isEnd) {
                 return const SizedBox();
-              }else{
+              } else {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   controller.onTapForSearch(isInit: false);
                 });
-                return  Container(
+                return Container(
                   width: 40,
                   height: 40,
                   alignment: Alignment.center,
@@ -99,11 +107,10 @@ class _SearchScreenState extends State<SearchScreen> {
             }
             return DocumentItem(
                 document: controller.documents[index],
-                onTapFavoriteItem : () => controller.onTapFavoriteItem(index)
-            );
+                onTapFavoriteItem: () => controller.onTapFavoriteItem(index));
           },
-          itemCount: controller.documents.length  + 1,
-          separatorBuilder: (ctx,index){
+          itemCount: controller.documents.length + 1,
+          separatorBuilder: (ctx, index) {
             return const SizedBox(
               height: 40,
             );

@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
+import 'package:universal_html/js.dart' as js;
 class MaestroTestUtil{
 
   List<K>? jsonToList<K>(Map<String, dynamic>? json,
@@ -33,8 +32,13 @@ extension WidgetExtension on Widget {
           onPointerDown: (event) async{
             // Check if right mouse button clicked
             if (event.kind == PointerDeviceKind.mouse && event.buttons == kSecondaryMouseButton) {
-              print('right mouse click');
-              await Clipboard.setData(const ClipboardData(text: "Text to be copied"));
+
+              js.context.callMethod('mouseRightClick', ['text']);
+
+
+
+              // print('right mouse click');
+              // await Clipboard.setData(const ClipboardData(text: "Text to be copied"));
             }
           },
           child: this,
