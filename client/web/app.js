@@ -1,14 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-      const sortableList = document.getElementById('messageList');
-      Sortable.create(sortableList, {
-        animation: 150,
-        ghostClass: 'sortable-ghost',
-        chosenClass: 'sortable-chosen',
-        onEnd: function(evt) {
-          console.log('Item reordered:', evt.item);
-        }
-      });
+  const sortableList = document.getElementById('messageList');
+    Sortable.create(sortableList, {
+      animation: 150,
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+      onStart: function (evt) {
+        document.body.classList.add('dragging');
+        evt.item.classList.add('dragging-item');
+      },
+      onEnd: function (evt) {
+        document.body.classList.remove('dragging');
+        evt.item.classList.remove('dragging-item');
+        console.log('Item reordered:', evt.item);
+      }
     });
+});
+
 function createYamlFile() {
   // Collect checked items from the message list
   const checkedItems = [];
@@ -137,10 +144,6 @@ function mouseRightClick(yamlContent) {
   contextMenu.style.left = `${left}px`;
   contextMenu.style.top = `${top}px`;
 }
-
-
-
-
 
 window.addEventListener('load', function(ev) {
   let target = document.getElementById("flutter-view");

@@ -1,230 +1,281 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base href="$FLUTTER_BASE_HREF">
+    <base href="$FLUTTER_BASE_HREF">
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="description" content="A new Flutter project.">
 
-  <!-- iOS meta tags & icons -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="client">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="client">
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>client</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" type='text/css' href="styles.css">
-  <link rel="stylesheet" type='text/css' href="loader.css">
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-     .header {
-        width: 100%;
-        height: 60px;
-        background-color: #4a4a4a;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        padding-left: 60px;
-        font-size: 18px;
-        flex-shrink: 0; /* Prevents header from shrinking */
-    }
-    .container {
-      display: flex;
-      flex: 1;
-      width: 100%;
-      overflow: hidden; /* Prevents overflowing content */
-    }
-    #flutter-view {
-      flex: 1;
-      border-right: 1px solid #ccc;
-      box-sizing: border-box;
-      overflow-y: auto;
-      position: relative; /* Ensure the overlay is positioned correctly */
-    }
-    #messageListContainer {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      box-sizing: border-box;
-      background-color: #f9f9f9;
-    }
-    .select-all-container {
-      display: flex;
-      align-items: center;
-      padding: 8px;
-      border-bottom: 1px solid #ccc; /* bottom border */
-      margin-bottom: 8px;
-      background: none; /* remove background */
-      flex-shrink: 0; /* Prevents the select-all container from shrinking */
-      justify-content: space-between; /* Add space between elements */
-    }
-    .select-all-container input {
-      margin-right: 10px;
-    }
-    .select-all-container .buttons {
-      display: flex;
-      gap: 10px; /* Adjust the gap between buttons */
-    }
-    .select-all-container button {
-      margin-left: auto;
-      padding: 6px 12px;
-      border: none;
-      border-radius: 4px;
-      background-color: #e74c3c; /* red background for delete button */
-      color: white;
-      cursor: pointer;
-    }
-    #messageList {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-      overflow-y: auto;
-      flex: 1; /* Allow it to grow and shrink as needed */
-    }
-    #messageList li {
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      margin: 5px;
-      background-color: #f3f4f6; /* bg-gray-100 */
-      border: 1px solid #ccc;
-      border-radius: 8px; /* rounded-xl */
-      cursor: move;
-    }
-    .sortable-ghost {
-      opacity: 0;
-    }
-    .sortable-chosen {
-      background-color: #e5e7eb; /* Slightly darker background for the chosen element */
-      border: 1px solid #ccc;
-    }
-    pre {
-      margin: 0;
-      padding: 8px;
-      background-color: #e5e7eb; /* Slightly darker background for the pre element */
-      border-radius: 4px; /* rounded */
-      font-family: monospace;
-      flex-grow: 1;
-    }
-    input[type="checkbox"] {
-      margin-right: 10px;
-    }
-    /* Custom context menu styles */
-    .context-menu {
-      display: none;
-      position: absolute;
-      background-color: white;
-      border: 1px solid #ccc;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-      border-radius: 4px;
-      overflow: hidden;
-      padding: 10px;
-      grid-template-columns: repeat(2, 1fr); /* 2 columns */
-      gap: 10px;
-    }
-    .context-menu-item {
-      padding: 8px;
-      cursor: pointer;
-      white-space: pre-wrap; /* Preserve whitespace and line breaks */
-      text-align: left;
-      background-color: #f9f9f9;
-      border-radius: 4px;
-    }
-    .context-menu-item:hover {
-      background-color: #f0f0f0;
-    }
-  </style>
-  <script>
-    function postMessageFromFlutter(yamlContent) {
-      // Handle the YAML content received from Flutter
-      console.log('Received YAML content from Flutter:', yamlContent);
+    <title>client</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" type='text/css' href="styles.css">
+    <link rel="stylesheet" type='text/css' href="loader.css">
+    <link rel="stylesheet" type='text/css' href="checkbox.css">
+    <style>
+        body {
+          display: flex;
+          flex-direction: column;
+          height: 100vh;
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+        }
+         .header {
+            width: 100%;
+            height: 60px;
+            background-color: #4a4a4a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 60px;
+            font-size: 18px;
+            flex-shrink: 0; /* Prevents header from shrinking */
+        }
+        .container {
+          display: flex;
+          flex: 1;
+          width: 100%;
+          overflow: hidden; /* Prevents overflowing content */
+        }
+        #flutter-view {
+          flex: 1;
+          border-right: 1px solid #ccc;
+          box-sizing: border-box;
+          overflow-y: auto;
+          position: relative; /* Ensure the overlay is positioned correctly */
+        }
+        #messageListContainer {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          box-sizing: border-box;
+          background-color: #f9f9f9;
+        }
+        .select-all-container {
+          display: flex;
+          align-items: center;
+          padding-right: 10px;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          padding-left: 12px;
+          border-bottom: 1px solid #ccc; /* bottom border */
+          margin-bottom: 8px;
+          background: none; /* remove background */
+          flex-shrink: 0; /* Prevents the select-all container from shrinking */
+          justify-content: space-between; /* Add space between elements */
+        }
+        .select-all-container input {
+          margin-right: 10px;
+        }
+        .select-all-container .buttons {
+          display: flex;
+          gap: 10px; /* Adjust the gap between buttons */
+        }
+        .select-all-container button {
+          margin-left: auto;
+          padding: 6px 12px;
+          border: none;
+          border-radius: 4px;
+          background-color: #e74c3c; /* red background for delete button */
+          color: white;
+          cursor: pointer;
+        }
+        #messageList {
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+          overflow-y: auto;
+          flex: 1; /* Allow it to grow and shrink as needed */
+        }
+        #messageList li {
+          display: flex;
+          align-items: center;
+          padding: 10px;
+          margin: 20px 30px;
+          background-color: #f3f4f6; /* bg-gray-100 */
+          border: 1px solid #ccc;
+          border-radius: 8px; /* rounded-xl */
+          cursor: move;
+        }
+        .sortable-ghost {
+          opacity: 0;
+        }
+        .sortable-chosen {
+          background-color: #e5e7eb; /* Slightly darker background for the chosen element */
+          border: 1px solid #ccc;
+        }
+        pre {
+          margin: 0;
+          padding: 8px;
+          background-color: #e5e7eb; /* Slightly darker background for the pre element */
+          border-radius: 4px; /* rounded */
+          font-family: monospace;
+          flex-grow: 1;
+        }
+        input[type="checkbox"] {
+          margin-right: 10px;
+        }
+        /* Custom context menu styles */
+        .context-menu {
+          display: none;
+          position: absolute;
+          background-color: white;
+          border: 1px solid #ccc;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+          z-index: 1000;
+          border-radius: 4px;
+          overflow: hidden;
+          padding: 10px;
+          grid-template-columns: repeat(2, 1fr); /* 2 columns */
+          gap: 10px;
+        }
+        .context-menu-item {
+          padding: 8px;
+          cursor: pointer;
+          white-space: pre-wrap; /* Preserve whitespace and line breaks */
+          text-align: left;
+          background-color: #f9f9f9;
+          border-radius: 4px;
+        }
+        .context-menu-item:hover {
+          background-color: #f0f0f0;
+        }
+        .select-all-label {
+          font-family: Arial, sans-serif;
+          font-size: 16px;
+          background-color: transparent;
+        }
+    </style>
+    <script>
+        function postMessageFromFlutter(yamlContent) {
+  // Handle the YAML content received from Flutter
+  console.log('Received YAML content from Flutter:', yamlContent);
 
-      // Create a list item
-      const listItem = document.createElement('li');
+  // Create a list item
+  const listItem = document.createElement('li');
+  listItem.classList.add('list-item');
 
-      // Create a checkbox element
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.classList.add('item-checkbox');
+  // Create a drag icon element
+  const dragIcon = document.createElement('span');
+  dragIcon.classList.add('drag-icon');
+  dragIcon.innerHTML = '≡'; // Unicode for the drag icon
 
-      // Create a preformatted element
-      const preElement = document.createElement('pre');
-      preElement.textContent = yamlContent;
+  // Create a wrapper div for the checkbox
+  const checkboxWrapper = document.createElement('div');
+  checkboxWrapper.classList.add('checkbox-wrapper-13');
 
-      // Append the checkbox and preformatted element to the list item
-      listItem.appendChild(checkbox);
-      listItem.appendChild(preElement);
+  // Create a checkbox element
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.classList.add('item-checkbox');
+  checkbox.id = `checkbox-${Date.now()}`; // Unique ID for the checkbox
+  checkbox.addEventListener('change', checkForCheckedItems);
 
-      // Append the list item to the message list
-      document.getElementById('messageList').appendChild(listItem);
-    }
+  // Create a preformatted element
+  const preElement = document.createElement('pre');
+  preElement.textContent = yamlContent;
+  preElement.style.cursor = 'pointer'; // Change cursor to pointer to indicate it's clickable
+  preElement.addEventListener('click', () => {
+    checkbox.checked = !checkbox.checked;
+    checkForCheckedItems();
+  });
 
-    function toggleSelectAll(source) {
-      const checkboxes = document.querySelectorAll('.item-checkbox');
-      checkboxes.forEach(checkbox => {
-        checkbox.checked = source.checked;
-      });
-    }
+  // Append the checkbox to the wrapper
+  checkboxWrapper.appendChild(checkbox);
 
-    function removeCheckedItems() {
-      const checkboxes = document.querySelectorAll('.item-checkbox:checked');
-      checkboxes.forEach(checkbox => {
-        checkbox.closest('li').remove();
-      });
-    }
+  // Append the drag icon, wrapper, and preformatted element to the list item
+  listItem.appendChild(dragIcon);
+  listItem.appendChild(checkboxWrapper);
+  listItem.appendChild(preElement);
+
+  // Append the list item to the message list
+  document.getElementById('messageList').appendChild(listItem);
+
+}
 
 
-    // The value below is injected by flutter build, do not touch.
-    const serviceWorkerVersion = null;
-  </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
-  <script src="app.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.14.0/js-yaml.min.js"></script>
+
+          function toggleSelectAll(source) {
+            const checkboxes = document.querySelectorAll('.item-checkbox');
+            checkboxes.forEach(checkbox => {
+              checkbox.checked = source.checked;
+            });
+            checkForCheckedItems();
+          }
+
+          // Function to check for checked items and toggle visibility of buttons
+          function checkForCheckedItems() {
+            const buttonsElement = document.querySelector('.buttons');
+            const anyChecked = document.querySelectorAll('#messageList li input[type="checkbox"]:checked').length > 0;
+            if (anyChecked) {
+              buttonsElement.style.visibility = 'visible';
+            } else {
+              buttonsElement.style.visibility = 'hidden';
+            }
+          }
+
+          function removeCheckedItems() {
+            const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+            checkboxes.forEach(checkbox => {
+              checkbox.closest('li').remove();
+            });
+            checkForCheckedItems();
+            toggleSelectAll();
+          }
+
+
+          // The value below is injected by flutter build, do not touch.
+          const serviceWorkerVersion = null;
+    </script>
+    <!-- This script adds the flutter initialization JS code -->
+    <script src="flutter.js" defer></script>
+    <script src="app.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.14.0/js-yaml.min.js"></script>
 </head>
 <body>
 <div class="header">
-  MaestroPad
+    MaestroPad
 </div>
 <div class="container">
-  <div id="flutter-view">
-    <div class="loader">
-      <div class="dot dot-1"></div>
-      <div class="dot dot-2"></div>
-      <div class="dot dot-3"></div>
-      <div class="dot dot-4"></div>
-      <div class="dot dot-5"></div>
+    <div id="flutter-view">
+        <div class="loader">
+            <div class="dot dot-1"></div>
+            <div class="dot dot-2"></div>
+            <div class="dot dot-3"></div>
+            <div class="dot dot-4"></div>
+            <div class="dot dot-5"></div>
+        </div>
     </div>
-  </div>
-  <div id="messageListContainer">
-    <div class="select-all-container">
-      <div>
-        <input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)">
-        <label for="selectAll">전체 선택</label>
-      </div>
-      <div class="buttons">
-        <button onclick="removeCheckedItems()">선택 삭제</button>
-        <button onclick="createYamlFile()">스크립트 저장</button>
-      </div>
+    <div id="messageListContainer">
+        <div class="select-all-container">
+            <div class="checkbox-wrapper-13">
+                <input id="selectAll" type="checkbox">
+                <label for="selectAll" style="padding-left:8px;">전체 선택</label>
+            </div>
+<!--            <div class="checkbox-wrapper-13">-->
+<!--                <input type="checkbox" id="selectAll">-->
+<!--                <label for="selectAll" style="text-align:center">전체 선택</label>-->
+<!--            </div>-->
+            <div class="buttons" style="visibility: hidden;">
+                <button onclick="removeCheckedItems()">선택 삭제</button>
+                <button onclick="createYamlFile()">스크립트 저장</button>
+            </div>
+        </div>
+        <ul id="messageList"></ul>
     </div>
-    <ul id="messageList"></ul>
-  </div>
 </div>
 
 <!-- Custom context menu -->
@@ -232,3 +283,5 @@
 </div>
 </body>
 </html>
+
+
