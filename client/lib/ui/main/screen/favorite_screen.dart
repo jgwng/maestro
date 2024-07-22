@@ -4,6 +4,8 @@ import 'package:client/business_logic/favorite/favorite_controller.dart';
 import 'package:client/ui/main/widget/document_item.dart';
 
 class FavoriteScreen extends StatefulWidget{
+  const FavoriteScreen({super.key});
+
   @override
   _FavoriteScreenState createState() => _FavoriteScreenState();
 }

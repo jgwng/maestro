@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:client/util/semantic_identifier.dart';
 import 'package:client/util/test_util.dart';
@@ -6,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:client/ui/main/widget/document_item.dart';
 import 'package:client/business_logic/search/search_controller.dart';
-import 'package:universal_html/html.dart';
-import 'package:universal_html/js.dart' as js;
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }

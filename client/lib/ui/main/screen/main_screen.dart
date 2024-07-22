@@ -3,6 +3,8 @@ import 'package:client/ui/main/screen/favorite_screen.dart';
 import 'package:client/ui/main/screen/search_screen.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
@@ -36,7 +38,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
             Expanded(
               child: TabBarView(
                 controller: tabController,
-                children: [
+                children: const [
                   SearchScreen(),
                   FavoriteScreen()
                 ],
