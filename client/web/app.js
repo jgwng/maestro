@@ -105,6 +105,30 @@ function copyToClipboard(text) {
   }
 }
 
+document.getElementById('yamlInput').addEventListener('keydown', function(event) {
+    if (event.altKey && event.key === 'Enter') {
+        event.preventDefault();
+        const yamlText = event.target.value;
+        console.log('yamltext : ' + yamlText);
+        try {
+            const doc = jsyaml.load(yamlText);
+            console.log('doc : ' + doc);
+            addYamlToList(yamlText);
+            event.target.value = ''; // Clear the input field
+        } catch (e) {
+            alert('Invalid YAML syntax');
+        }
+    }
+});
+
+function addYamlToList(yamlText) {
+    const messageList = document.getElementById('messageList');
+    const listItem = document.createElement('li');
+    const preElement = document.createElement('pre');
+    preElement.textContent = yamlText;
+    listItem.appendChild(preElement);
+    messageList.appendChild(listItem);
+}
     // Hide context menu on click outside
 document.addEventListener('click', function(event) {
    const contextMenu = document.getElementById('contextMenu');
