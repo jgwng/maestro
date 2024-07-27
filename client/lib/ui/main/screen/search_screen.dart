@@ -13,13 +13,13 @@ class SearchScreen extends StatefulWidget {
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends State<SearchScreen>  with AutomaticKeepAliveClientMixin<SearchScreen>{
   late SearchDocumentController controller;
 
   @override
   void initState() {
     super.initState();
-    controller = Get.put<SearchDocumentController>(SearchDocumentController());
+    controller = Get.find<SearchDocumentController>();
   }
 
   @override
@@ -104,10 +104,11 @@ class _SearchScreenState extends State<SearchScreen> {
                 );
               }
             }
-            return DocumentItem(
-                document: controller.documents[index],
-                onTapFavoriteItem: () => controller.onTapFavoriteItem(index));
-          },
+            return SearchBookItem(
+                book: controller.documents[index],
+                onTapFavoriteItem: (result,item) => controller.onTapFavoriteItems(result,item),
+            );
+            },
           itemCount: controller.documents.length + 1,
           separatorBuilder: (ctx, index) {
             return const SizedBox(
@@ -118,4 +119,8 @@ class _SearchScreenState extends State<SearchScreen> {
       }),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

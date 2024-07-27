@@ -1,6 +1,8 @@
+import 'package:client/core/maestro_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:client/init_setting.dart';
 import 'package:client/ui/main/screen/main_screen.dart';
+import 'package:get/get.dart';
 
 void main() async{
   await initAppSetting();
@@ -13,14 +15,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Maestro Test',
-      navigatorKey: navigatorKey,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MainScreen(),
+    return GetMaterialApp(
+        title: 'Maestro Test',
+        navigatorKey: navigatorKey,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        getPages: AppPages.pages,
+        initialRoute: AppRoutes.home,
     );
   }
 }

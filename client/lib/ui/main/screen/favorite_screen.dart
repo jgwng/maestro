@@ -10,14 +10,14 @@ class FavoriteScreen extends StatefulWidget{
   _FavoriteScreenState createState() => _FavoriteScreenState();
 }
 
-class _FavoriteScreenState extends State<FavoriteScreen>{
+class _FavoriteScreenState extends State<FavoriteScreen> with AutomaticKeepAliveClientMixin<FavoriteScreen>{
 
   late FavoriteController controller;
 
   @override
   void initState(){
     super.initState();
-    controller = Get.put<FavoriteController>(FavoriteController());
+    controller = Get.find<FavoriteController>();
   }
 
   @override
@@ -29,9 +29,9 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             itemBuilder: (ctx,index){
-              return DocumentItem(
-                  document: controller.favoriteDocuments[index],
-                  onTapFavoriteItem : () => controller.onTapRemoveFavorite(index)
+              return SearchBookItem(
+                  book: controller.favoriteDocuments[index],
+                  onTapFavoriteItem : controller.onTapRemoveFavorite
               );
             },
             itemCount: controller.favoriteDocuments.length,
@@ -45,4 +45,8 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
       }),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

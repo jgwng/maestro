@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:client/business_logic/favorite/favorite_controller.dart';
 import 'package:client/helper/maestro_db_helper.dart';
 import 'package:client/main.dart';
-import 'package:client/model/documents.dart';
+import 'package:client/model/book.dart';
 import 'package:client/network/document_repository.dart';
 
 class SearchDocumentController extends GetxController{
@@ -15,13 +15,13 @@ class SearchDocumentController extends GetxController{
   int pageSize = 20;
   RxBool isSearching = false.obs;
   bool isEnd = false;
-  RxList<Document> documents = <Document>[].obs;
-  List<Document> favDocuments = [];
+  RxList<Book> documents = <Book>[].obs;
+  List<Book> favDocuments = [];
 
   @override
   void onReady() async{
     super.onReady();
-    List<Document> savedDocuments = await MaestroDBHelper().getDB();
+    List<Book> savedDocuments = await MaestroDBHelper().getDB();
     favDocuments.addAll(savedDocuments);
   }
 
@@ -52,10 +52,10 @@ class SearchDocumentController extends GetxController{
         searchWord = fieldController.text;
         documents.clear();
       }
-      for(Document document in response){
-        int index = favDocuments.indexWhere((element) => element.imageUrl == document.imageUrl);
+      for(Book book in response){
+        int index = favDocuments.indexWhere((element) => element.thumbnail == book.thumbnail);
         if(index >=0){
-          document.isFavorite = 'TRUE';
+          book.isFavorite = 'TRUE';
         }
       }
       documents.addAll(response);
@@ -67,23 +67,22 @@ class SearchDocumentController extends GetxController{
     isSearching.value = false;
   }
 
-  void onTapFavoriteItem(int index) async{
-    Document document = documents[index];
-    bool isFavorite = document.isFavorite == 'TRUE';
+  void onTapFavoriteItems(bool isFavorite, Book book) async{
+    int index = documents.indexWhere((element) => element.thumbnail == book.thumbnail);
     documents[index].isFavorite = isFavorite ? 'FALSE' : 'TRUE';
     documents.refresh();
     if(isFavorite == true){
-      favDocuments.removeWhere((element) => element.imageUrl == document.imageUrl);
+      favDocuments.removeWhere((element) => element.thumbnail == book.thumbnail);
       MaestroDBHelper().delete(documents[index]);
     }else{
-      favDocuments.add(document);
+      favDocuments.add(book);
       MaestroDBHelper().insert(documents[index]);
     }
 
     if(Get.isRegistered<FavoriteController>()){
       FavoriteController favController = Get.find<FavoriteController>();
       if(isFavorite == true){
-        int favoriteIndex = favController.favoriteDocuments.indexWhere((element) => element.imageUrl == document.imageUrl);
+        int favoriteIndex = favController.favoriteDocuments.indexWhere((element) => element.thumbnail == book.thumbnail);
         if(index >=0){
           favController.favoriteDocuments.removeAt(favoriteIndex);
         }
@@ -92,5 +91,4 @@ class SearchDocumentController extends GetxController{
       }
     }
   }
-
 }

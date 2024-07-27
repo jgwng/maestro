@@ -1,6 +1,9 @@
+import 'package:client/business_logic/favorite/favorite_controller.dart';
+import 'package:client/business_logic/search/search_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:client/ui/main/screen/favorite_screen.dart';
 import 'package:client/ui/main/screen/search_screen.dart';
+import 'package:get/get.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -17,6 +20,8 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   void initState(){
     super.initState();
     tabController = TabController(vsync: this,length: 2);
+    Get.put<SearchDocumentController>(SearchDocumentController());
+    Get.put<FavoriteController>(FavoriteController());
   }
 
   @override

@@ -23,7 +23,7 @@ abstract class MaestroTestHttps {
   @mustCallSuper
   static void setBaseSetting({bool force = false}) {
 
-    _dio.options = _baseOptionBuilder(baseUrl: SzsTestUrl.baseUrl);
+    _dio.options = _baseOptionBuilder(baseUrl: ClientTestUrl.baseUrl);
 
     _dio.interceptors
       ..clear()

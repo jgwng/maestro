@@ -17,6 +17,8 @@ dependencies:
   path: 1.9.0
   get: 4.6.6
   dio: 5.4.0
+  cached_network_image: ^3.3.1
+  pointer_interceptor: ^0.10.1+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -27,4 +29,10 @@ flutter:
   uses-material-design: true
   assets:
     - .env
-
+  fonts:
+    - family: 'SuiteBold'
+      fonts:
+        - asset: asset/font/SUITE-Bold.otf
+    - family: 'SuiteMedium'
+      fonts:
+        - asset: asset/font/SUITE-Medium.otf

@@ -1,71 +1,111 @@
+import 'package:client/core/maestro_resources.dart';
+import 'package:client/core/maestro_routes.dart';
+import 'package:client/model/book.dart';
 import 'package:flutter/material.dart';
-import 'package:client/model/documents.dart';
 import 'package:client/ui/detail/screen/detail_screen.dart';
+import 'package:client/ui/widget/general_network_image.dart'
+    if (dart.library.html) 'package:client/ui/widget/web_network_image.dart';
+import 'package:get/get.dart';
 
-class DocumentItem extends StatelessWidget{
+typedef FavoriteCallback = void Function(bool,Book);
 
-  const DocumentItem({super.key, required this.document,this.onTapFavoriteItem});
-  final Document document;
-  final VoidCallback? onTapFavoriteItem;
+class SearchBookItem extends StatelessWidget {
+  SearchBookItem({super.key, required this.book,this.onTapFavoriteItem});
+
+  final Book book;
+  final FavoriteCallback? onTapFavoriteItem;
+
+  late RxBool isFavorite = (book.isFavorite == 'TRUE').obs;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () async{
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-          return DetailScreen(
-            imageUrl: document.imageUrl ?? '',
-          );
-        }
-        ));
-      },
+      onTap: onTapBookItem,
       child: Container(
         height: 100,
-        padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
-            border: Border.all(
-                color: Colors.black
-            ),
-          borderRadius: BorderRadius.circular(8.0)
-        ),
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(8.0)),
         child: Row(
           children: [
             SizedBox(
-              width: 80,
-              height: 80,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(4.0),
-                child: Image.network(
-                  document.imageUrl ?? '',
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                ),
-              )
+                width: 80,
+                height: 80,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(4.0),
+                  child: CachedImage(
+                    url: book.thumbnail ?? '',
+                    width: 80,
+                    height: 80,
+                    onTap: onTapBookItem,
+                  ),
+                )),
+            const SizedBox(
+              width: 12,
             ),
-
             Expanded(
-              child: Text(
-                  '출처 : ${document.displaySiteName ?? ''}',
-                maxLines: 1,
-                textAlign: TextAlign.right,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    book.title ?? '',
+                    style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: AppFonts.bold),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    (book.authors ?? []).join(','),
+                    style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: AppFonts.medium),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
               ),
             ),
             const SizedBox(
               width: 4,
             ),
-            InkWell(
-              onTap: onTapFavoriteItem,
-              child: Icon(
-                  (document.isFavorite == 'TRUE') ?  Icons.favorite : Icons.favorite_outline,
-                  size: 20,
-                  color : Colors.deepPurple
-              ),
-            )
+            Obx((){
+              return InkWell(
+                onTap: (){
+                  if(onTapFavoriteItem != null){
+                    onTapFavoriteItem!(isFavorite.value,book);
+                  }
+                },
+                child: Icon(
+                    ( isFavorite.value)
+                        ? Icons.favorite
+                        : Icons.favorite_outline,
+                    size: 24,
+                    color: AppThemes.favoriteColor),
+              );
+            })
           ],
         ),
       ),
     );
   }
 
+
+  void onTapBookItem() async {
+    var result = await Get.toNamed(AppRoutes.detail,arguments: {
+      'book': book
+    });
+    if (result != null && result is bool) {
+      isFavorite.value = result;
+      if(onTapFavoriteItem != null){
+        onTapFavoriteItem!(isFavorite.value,book);
+      }
+    }
+  }
 }

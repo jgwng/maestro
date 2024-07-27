@@ -1,6 +1,6 @@
 import 'package:client/core/maestro_test_http.dart';
 import 'package:client/core/maestro_test_url.dart';
-import 'package:client/model/documents.dart';
+import 'package:client/model/book.dart';
 import 'package:client/util/test_util.dart';
 
 class DocumentRepository extends MaestroTestHttps{
@@ -11,7 +11,7 @@ class DocumentRepository extends MaestroTestHttps{
 
   static DocumentRepository? _instance;
 
-  Future<List<Document>?> getSearchResult({String? query,String? sort,int? pageNo,int? pageSize}) async {
+  Future<List<Book>?> getSearchResult({String? query,String? sort,int? pageNo,int? pageSize}) async {
     var params = {
       'query': query,
       'sort':sort,
@@ -19,9 +19,9 @@ class DocumentRepository extends MaestroTestHttps{
       'size':'$pageSize',
     };
 
-    final res = await get(SzsTestUrl.searchUrl, queries: params);
+    final res = await get(ClientTestUrl.searchUrl, queries: params);
     if (res.statusCode == 200) {
-      return MaestroTestUtil().jsonToList<Document>(res.data ?? {},Document.fromJson,'documents');
+      return MaestroTestUtil().jsonToList<Book>(res.data ?? {},Book.fromJson,'documents');
     }
     return null;
   }
