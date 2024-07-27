@@ -106,20 +106,40 @@ function copyToClipboard(text) {
 }
 
 document.getElementById('yamlInput').addEventListener('keydown', function(event) {
-    if (event.altKey && event.key === 'Enter') {
-        event.preventDefault();
-        const yamlText = event.target.value;
-        console.log('yamltext : ' + yamlText);
-        try {
-            const doc = jsyaml.load(yamlText);
-            console.log('doc : ' + doc);
-            addYamlToList(yamlText);
-            event.target.value = ''; // Clear the input field
-        } catch (e) {
-            alert('Invalid YAML syntax');
+            if (event.altKey && event.key === 'Enter') {
+                event.preventDefault();
+                const yamlText = event.target.value;
+
+                try {
+                    const doc = jsyaml.load(yamlText);
+                    if (typeof doc === 'object' && doc !== null && !Array.isArray(doc)) {
+                        if (containsNull(doc)) {
+                            alert('The YAML contains null values');
+                        } else {
+                            postMessageFromFlutter(yamlText);
+                            event.target.value = ''; // Clear the input field
+                        }
+                    } else {
+                        alert('The YAML is not a valid map/object');
+                    }
+                } catch (e) {
+                    alert('Invalid YAML syntax');
+                }
+            }
+        });
+    function containsNull(obj) {
+            for (const key in obj) {
+                if (obj[key] === null) {
+                    return true;
+                }
+                if (typeof obj[key] === 'object' && obj[key] !== null) {
+                    if (containsNull(obj[key])) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
-    }
-});
 
 function addYamlToList(yamlText) {
     const messageList = document.getElementById('messageList');
@@ -202,49 +222,3 @@ window.addEventListener('load', function(ev) {
     }
   });
 });
-//window.addEventListener('load', function(ev) {
-//  // Set an initial progress of 33% when the page loads.
-//  progress.style.width = `33%`;
-// const myElement = document.getElementById('logo');
-// const position = getElementPosition(myElement);
-// console.log('Element Position:', position);
-//  // Download main.dart.js
-//  let target = document.querySelector("#flutter-view");
-//
-//  // Check if the user is on a mobile device (Android/iOS)
-//  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-//
-//  _flutter.loader.loadEntrypoint({
-//    serviceWorker: {
-//      serviceWorkerVersion: serviceWorkerVersion,
-//    },
-//    onEntrypointLoaded: async function(engineInitializer) {
-//        const config = {
-//                          // Set hostElement based on device type
-//                          hostElement: isMobile ? null : target,
-//                          canvasKitBaseUrl: "./canvaskit/",
-////                          useColorEmoji:true,
-//                          buildConfig: {
-//                              builds: [
-//                                {
-//                                  compileTarget: "dart2wasm",
-//                                  renderer: "skwasm",
-//                                  mainWasmPath: "main.dart.wasm",
-//                                  jsSupportRuntimePath: "main.dart.mjs"
-//                                },
-//                                {
-//                                  compileTarget: "dart2js",
-//                                  renderer: "canvaskit",
-//                                  mainJsPath: "main.dart.js"
-//                                }
-//                              ]
-//                            }
-//                       };
-//       const appRunner = await engineInitializer.initializeEngine(config);
-//       // Set progress to 99% before adding a delay.
-//       progress.style.width = `100%`;
-//
-//       appRunner.runApp();
-//    }
-//  });
-//});
