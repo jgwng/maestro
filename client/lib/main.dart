@@ -1,7 +1,6 @@
 import 'package:client/core/maestro_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:client/init_setting.dart';
-import 'package:client/ui/main/screen/main_screen.dart';
 import 'package:get/get.dart';
 
 void main() async{
