@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+   const selectAllCheckbox = document.getElementById('selectAll');
+   selectAllCheckbox.addEventListener('click', function() {
+                toggleSelectAll(this);
+   });
   const sortableList = document.getElementById('messageList');
     Sortable.create(sortableList, {
       animation: 150,
@@ -76,12 +80,14 @@ function getAdjustedPosition(x, y, menu) {
       return { left: x, top: y };
 }
 
-function onContextMenuClick(action,yamlContent) {
+function onContextMenuClick(action,yamlContent,callback) {
         console.log(`Context menu action: ${action}`);
         if (action.includes('ID 복사하기')) {
          copyToClipboard(yamlContent);
        } else {
          postMessageFromFlutter(action);
+         if(action.includes('tapOn') || action.includes('doubleTapOn'))
+         callback(action);
        }
        document.getElementById('contextMenu').style.display = 'none';
 }
@@ -158,9 +164,10 @@ document.addEventListener('click', function(event) {
 });
 
 
-function mouseRightClick(yamlContent) {
+function mouseRightClick(yamlContent,callback) {
    const menuItems = [
       `- runScript:\n    id: "${yamlContent}"`,
+      `- tapOn:\n    id: "${yamlContent}"`,
       `- doubleTapOn:\n    id: "${yamlContent}"`,
       `- assertVisible:\n    id: "${yamlContent}"`,
       `- assertNotVisible:\n    id: "${yamlContent}"`,
@@ -177,7 +184,7 @@ function mouseRightClick(yamlContent) {
     menuItem.classList.add('context-menu-item');
     menuItem.textContent = item;
     menuItem.onclick = function() {
-      onContextMenuClick(item,yamlContent);
+      onContextMenuClick(item,yamlContent,callback);
     };
     contextMenu.appendChild(menuItem);
   });

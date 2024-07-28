@@ -33,7 +33,9 @@ extension WidgetExtension on Widget {
             // Check if right mouse button clicked
             if (event.kind == PointerDeviceKind.mouse && event.buttons == kSecondaryMouseButton) {
 
-              js.context.callMethod('mouseRightClick', ['text']);
+              js.context.callMethod('mouseRightClick', ['text',(data){
+                print('data : $data');
+              }]);
 
 
 
