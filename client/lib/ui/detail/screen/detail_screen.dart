@@ -23,7 +23,7 @@ class _DetailScreenState extends State<DetailScreen> {
     book = Get.arguments?['book'] ?? Book();
     viewType =
         'cached-image-detail-${(book.thumbnail ?? '').hashCode}-${DateTime.now().toIso8601String()}';
-    isFavorite.value = book.isFavorite == 'false'.toUpperCase();
+    isFavorite.value = book.isFavorite == 'true'.toUpperCase();
     authors = (book.authors ?? []).join(',');
     translators = (book.translators ?? []).join(',');
   }
@@ -33,13 +33,24 @@ class _DetailScreenState extends State<DetailScreen> {
     return PopScope(
       canPop: false,
       onPopInvoked : (didPop){
-        Navigator.pop(context,isFavorite.value);
+        if (didPop) {
+          return;
+        }
+        Get.back(result: isFavorite.value);
       },
       child: Scaffold(
         body: SafeArea(
           child: CustomScrollView(
             slivers: [
               SliverAppBar(
+                leading: IconButton(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  onPressed: (){
+                    Get.back(result: isFavorite.value);
+                  },
+                  icon: const Icon(Icons.arrow_back_ios,size: 24,color: Colors.black,),
+                ),
                 backgroundColor: Colors.white,
                 expandedHeight: MediaQuery.of(context).size.height * 0.4,
                 collapsedHeight: MediaQuery.of(context).size.height * 0.4,
@@ -56,7 +67,9 @@ class _DetailScreenState extends State<DetailScreen> {
                       right: 12,
                       bottom: -8,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          isFavorite.toggle();
+                        },
                         child: Container(
                           width: 44,
                           height: 44,

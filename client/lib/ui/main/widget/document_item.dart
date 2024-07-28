@@ -2,15 +2,15 @@ import 'package:client/core/maestro_resources.dart';
 import 'package:client/core/maestro_routes.dart';
 import 'package:client/model/book.dart';
 import 'package:flutter/material.dart';
-import 'package:client/ui/detail/screen/detail_screen.dart';
 import 'package:client/ui/widget/general_network_image.dart'
     if (dart.library.html) 'package:client/ui/widget/web_network_image.dart';
 import 'package:get/get.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 
-typedef FavoriteCallback = void Function(bool,Book);
+typedef FavoriteCallback = void Function(bool, Book);
 
 class SearchBookItem extends StatelessWidget {
-  SearchBookItem({super.key, required this.book,this.onTapFavoriteItem});
+  SearchBookItem({super.key, required this.book, this.onTapFavoriteItem});
 
   final Book book;
   final FavoriteCallback? onTapFavoriteItem;
@@ -19,7 +19,8 @@ class SearchBookItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return PointerInterceptor(
+        child: InkWell(
       onTap: onTapBookItem,
       child: Container(
         height: 100,
@@ -75,15 +76,18 @@ class SearchBookItem extends StatelessWidget {
             const SizedBox(
               width: 4,
             ),
-            Obx((){
+            Obx(() {
               return InkWell(
-                onTap: (){
-                  if(onTapFavoriteItem != null){
-                    onTapFavoriteItem!(isFavorite.value,book);
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                onTap: () {
+                  if (onTapFavoriteItem != null) {
+                    onTapFavoriteItem!(isFavorite.value, book);
                   }
                 },
                 child: Icon(
-                    ( isFavorite.value)
+                    (isFavorite.value)
                         ? Icons.favorite
                         : Icons.favorite_outline,
                     size: 24,
@@ -93,18 +97,17 @@ class SearchBookItem extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
-
   void onTapBookItem() async {
-    var result = await Get.toNamed(AppRoutes.detail,arguments: {
-      'book': book
-    });
+    var result = await Get.toNamed(AppRoutes.detail, arguments: {'book': book});
     if (result != null && result is bool) {
+      if(isFavorite.value == result) return;
+
       isFavorite.value = result;
-      if(onTapFavoriteItem != null){
-        onTapFavoriteItem!(isFavorite.value,book);
+      if (onTapFavoriteItem != null) {
+        onTapFavoriteItem!(isFavorite.value, book);
       }
     }
   }

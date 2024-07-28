@@ -71,6 +71,11 @@ class _WebNetworkImageState extends State<CachedImage> with SingleTickerProvider
           // Start the animation when the image is loaded
           _controller.forward();
         });
+        imgElement.onClick.listen((event) {
+          if(widget.onTap != null){
+            widget.onTap!();
+          }
+        });
         return imgElement;
       },
     );
@@ -99,26 +104,31 @@ class _WebNetworkImageState extends State<CachedImage> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: widget.width,
-      height: widget.height,
-      child: ClipRRect(
-        borderRadius: widget.borderRadius ?? BorderRadius.zero,
-        child: ValueListenableBuilder(
-          valueListenable: opacityRatio,
-          builder: (context,value,child){
-            return Opacity(
-              opacity: _animation.value,
-              child: PointerInterceptor(
-                child: InkWell(
-                  onTap: widget.onTap,
-                  child: HtmlElementView(
-                      viewType: viewType),
-                ),
-              ),
-            );
-          },
-        )
+    return GestureDetector(
+      onTap: (){
+        print('onTAp');
+      },
+      child: SizedBox(
+        width: widget.width,
+        height: widget.height,
+        child: ClipRRect(
+            borderRadius: widget.borderRadius ?? BorderRadius.zero,
+            child: ValueListenableBuilder(
+              valueListenable: opacityRatio,
+              builder: (context,value,child){
+                return Opacity(
+                  opacity: _animation.value,
+                  child: PointerInterceptor(
+                    child: InkWell(
+                      onTap: widget.onTap,
+                      child: HtmlElementView(
+                          viewType: viewType),
+                    ),
+                  ),
+                );
+              },
+            )
+        ),
       ),
     );
   }
