@@ -1,39 +1,56 @@
 document.addEventListener('DOMContentLoaded', () => {
-   const selectAllCheckbox = document.getElementById('selectAll');
-   selectAllCheckbox.addEventListener('click', function() {
-                toggleSelectAll(this);
-   });
+  const selectAllCheckbox = document.getElementById('selectAll');
+  selectAllCheckbox.addEventListener('click', function() {
+    toggleSelectAll(this);
+  });
+
   const sortableList = document.getElementById('messageList');
-    Sortable.create(sortableList, {
-      animation: 150,
-      ghostClass: 'sortable-ghost',
-      chosenClass: 'sortable-chosen',
-      onStart: function (evt) {
-        document.body.classList.add('dragging');
-        evt.item.classList.add('dragging-item');
-      },
-      onEnd: function (evt) {
-        document.body.classList.remove('dragging');
-        evt.item.classList.remove('dragging-item');
-        console.log('Item reordered:', evt.item);
-      }
-    });
+  Sortable.create(sortableList, {
+    animation: 150,
+    ghostClass: 'sortable-ghost',
+    chosenClass: 'sortable-chosen',
+    onStart: function(evt) {
+      document.body.classList.add('dragging');
+      evt.item.classList.add('dragging-item');
+    },
+    onEnd: function(evt) {
+      document.body.classList.remove('dragging');
+      evt.item.classList.remove('dragging-item');
+      console.log('Item reordered:', evt.item);
+    }
+  });
+
+  const saveYamlBtn = document.getElementById("saveYamlBtn");
+  const confirmDownloadBtn = document.getElementById("confirmDownloadBtn");
+
+  saveYamlBtn.onclick = function() {
+    $('#myModal').modal('show');
+  }
+
+  confirmDownloadBtn.onclick = function() {
+    const filenameInput = document.getElementById('filenameInput').value.trim();
+    const filename = filenameInput === '' ? 'download.yaml' : filenameInput;
+    createYamlFile(filename);
+    $('#myModal').modal('hide');
+  }
 });
 
-function createYamlFile() {
+
+function createYamlFile(filename) {
   // Collect checked items from the message list
   const checkedItems = [];
   let checkedYamlContent = '';
   document.querySelectorAll('#messageList li input[type="checkbox"]:checked').forEach((checkbox) => {
-      const listItem = checkbox.closest('li');
-      const preElement = listItem.querySelector('pre');
-      if (preElement) {
-        checkedYamlContent += preElement.textContent + '\n';
-      }
-    });
+    const listItem = checkbox.closest('li');
+    const preElement = listItem.querySelector('pre');
+    if (preElement) {
+      checkedYamlContent += preElement.textContent + '\n';
+    }
+  });
+
   const appId = 'com.woong.client';
   const yamlContent = {
-          appId: appId,
+    appId: appId,
   };
 
   let yamlStr = `${jsyaml.dump(yamlContent)}---\n`;
@@ -47,8 +64,8 @@ function createYamlFile() {
   // Create a link element
   const link = document.createElement('a');
 
-  // Set the download attribute with a filename
-  link.download = 'checked_items.yaml';
+  // Set the download attribute with the filename
+  link.download = (filename.includes('.yaml')) ? `${filename}` : `${filename}.yaml`;
 
   // Create a URL for the Blob and set it as the href attribute
   link.href = window.URL.createObjectURL(blob);
@@ -147,14 +164,6 @@ document.getElementById('yamlInput').addEventListener('keydown', function(event)
             return false;
         }
 
-function addYamlToList(yamlText) {
-    const messageList = document.getElementById('messageList');
-    const listItem = document.createElement('li');
-    const preElement = document.createElement('pre');
-    preElement.textContent = yamlText;
-    listItem.appendChild(preElement);
-    messageList.appendChild(listItem);
-}
     // Hide context menu on click outside
 document.addEventListener('click', function(event) {
    const contextMenu = document.getElementById('contextMenu');
@@ -195,6 +204,115 @@ function mouseRightClick(yamlContent,callback) {
   contextMenu.style.left = `${left}px`;
   contextMenu.style.top = `${top}px`;
 }
+
+function toggleSelectAll(source) {
+  const checkboxes = document.querySelectorAll('.form-check-input');
+  console.log('source : ', source);
+  console.log('source.checked : ', source.checked);
+  checkboxes.forEach(checkbox => {
+    checkbox.checked = source.checked;
+  });
+  checkForCheckedItems();
+}
+          // Function to check for checked items and toggle visibility of buttons
+function checkForCheckedItems() {
+            const buttonsElement = document.querySelector('.buttons');
+            const anyChecked = document.querySelectorAll('#messageList li input[type="checkbox"]:checked').length > 0;
+            if (anyChecked) {
+              buttonsElement.style.visibility = 'visible';
+            } else {
+              buttonsElement.style.visibility = 'hidden';
+            }
+}
+
+function removeCheckedItems() {
+  // Select all checked checkboxes with the class 'form-check-input'
+  const checkboxes = document.querySelectorAll('.form-check-input:checked');
+
+  // Remove each checked checkbox's closest 'li' element
+  checkboxes.forEach(checkbox => {
+    checkbox.closest('li').remove();
+  });
+
+  // Update the visibility of the buttons based on checked items
+  checkForCheckedItems();
+
+  // Uncheck the select-all checkbox if no items are left
+  const selectAllCheckbox = document.getElementById('selectAll');
+  if (selectAllCheckbox) {
+    selectAllCheckbox.checked = false;
+  }
+}
+
+function postMessageFromFlutter(yamlContent) {
+  // Handle the YAML content received from Flutter
+  console.log('Received YAML content from Flutter:', yamlContent);
+
+  // Create a list item
+  const listItem = document.createElement('li');
+  listItem.classList.add('list-item');
+  listItem.style.position = 'relative'; // Ensure relative positioning for child elements
+
+  // Create a drag icon element
+  const dragIcon = document.createElement('span');
+  dragIcon.classList.add('drag-icon');
+  dragIcon.innerHTML = '≡'; // Unicode for the drag icon
+  dragIcon.style.marginLeft = '8px'; // Add 8px space between drag icon and checkbox
+  dragIcon.style.marginRight = '8px'; // Add 8px space between drag icon and checkbox
+  dragIcon.style.position = 'absolute';
+  dragIcon.style.left = '0';
+  dragIcon.style.display = 'none'; // Hide the drag icon initially
+
+  // Show the drag icon on hover
+  listItem.addEventListener('mouseenter', () => {
+    dragIcon.style.display = 'block';
+  });
+
+  // Hide the drag icon when not hovering
+  listItem.addEventListener('mouseleave', () => {
+    dragIcon.style.display = 'none';
+  });
+
+  // Create a wrapper div for the checkbox
+  const checkboxWrapper = document.createElement('div');
+  checkboxWrapper.classList.add('form-check'); // Bootstrap class for form check
+  checkboxWrapper.style.marginLeft = '8px'; // Add margin to ensure spacing with drag icon
+
+  // Create a checkbox element
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.style.marginLeft = '8px';
+  checkbox.classList.add('form-check-input'); // Bootstrap class for form check input
+  checkbox.id = `checkbox-${Date.now()}`; // Unique ID for the checkbox
+  checkbox.addEventListener('change', checkForCheckedItems);
+
+  // Create a label element for the checkbox
+  const checkboxLabel = document.createElement('label');
+  checkboxLabel.classList.add('form-check-label'); // Bootstrap class for form check label
+  checkboxLabel.setAttribute('for', checkbox.id); // Set 'for' attribute to match checkbox id
+
+  // Create a preformatted element
+  const preElement = document.createElement('pre');
+  preElement.textContent = yamlContent;
+  preElement.style.cursor = 'pointer'; // Change cursor to pointer to indicate it's clickable
+  preElement.addEventListener('click', () => {
+    checkbox.checked = !checkbox.checked;
+    checkForCheckedItems();
+  });
+
+  // Append the checkbox and label to the wrapper
+  checkboxWrapper.appendChild(checkbox);
+  checkboxWrapper.appendChild(checkboxLabel);
+
+  // Append the drag icon, wrapper, and preformatted element to the list item
+  listItem.appendChild(dragIcon);
+  listItem.appendChild(checkboxWrapper);
+  listItem.appendChild(preElement);
+
+  // Append the list item to the message list
+  document.getElementById('messageList').appendChild(listItem);
+}
+
 
 window.addEventListener('load', function(ev) {
   let target = document.getElementById("flutter-view");
