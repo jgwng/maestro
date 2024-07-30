@@ -1,39 +1,57 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const selectAllCheckbox = document.getElementById('selectAll');
-  selectAllCheckbox.addEventListener('click', function() {
+$(document).ready(function() {
+  // Handle select all checkbox
+  const $selectAllCheckbox = $('#selectAll');
+  $selectAllCheckbox.on('click', function() {
     toggleSelectAll(this);
   });
 
+  // Handle textarea input
+  const $textarea = $('#yamlInput');
+  const $actionButton = $('#actionButton');
+
+  $textarea.on('input', function() {
+    if ($textarea.val().trim().length > 0) {
+      $actionButton.show();
+    } else {
+      $actionButton.hide();
+    }
+  });
+
+  // Initialize sortable list
   const sortableList = document.getElementById('messageList');
   Sortable.create(sortableList, {
     animation: 150,
     ghostClass: 'sortable-ghost',
     chosenClass: 'sortable-chosen',
     onStart: function(evt) {
-      document.body.classList.add('dragging');
-      evt.item.classList.add('dragging-item');
+      $('body').addClass('dragging');
+      $(evt.item).addClass('dragging-item');
     },
     onEnd: function(evt) {
-      document.body.classList.remove('dragging');
-      evt.item.classList.remove('dragging-item');
+      $('body').removeClass('dragging');
+      $(evt.item).removeClass('dragging-item');
       console.log('Item reordered:', evt.item);
     }
   });
+   $('#actionButton').on('click', function() {
+    const yamlText = $('#yamlInput').val();
+    checkYamlAddToList(yamlText);
+  });
 
-  const saveYamlBtn = document.getElementById("saveYamlBtn");
-  const confirmDownloadBtn = document.getElementById("confirmDownloadBtn");
-
-  saveYamlBtn.onclick = function() {
+  // Handle save YAML button click
+  $('#saveYamlBtn').on('click', function() {
     $('#myModal').modal('show');
-  }
+  });
 
-  confirmDownloadBtn.onclick = function() {
-    const filenameInput = document.getElementById('filenameInput').value.trim();
+  // Handle confirm download button click
+  $('#confirmDownloadBtn').on('click', function() {
+    const filenameInput = $('#filenameInput').val().trim();
     const filename = filenameInput === '' ? 'download.yaml' : filenameInput;
     createYamlFile(filename);
     $('#myModal').modal('hide');
-  }
+  });
 });
+
 
 
 function createYamlFile(filename) {
@@ -132,8 +150,12 @@ document.getElementById('yamlInput').addEventListener('keydown', function(event)
             if (event.altKey && event.key === 'Enter') {
                 event.preventDefault();
                 const yamlText = event.target.value;
+                checkYamlAddToList(yamlText);
+            }
+        });
 
-                try {
+function checkYamlAddToList(yamlText){
+try {
                     const doc = jsyaml.load(yamlText);
                     if (typeof doc === 'object' && doc !== null && !Array.isArray(doc)) {
                         if (containsNull(doc)) {
@@ -147,9 +169,10 @@ document.getElementById('yamlInput').addEventListener('keydown', function(event)
                     }
                 } catch (e) {
                     alert('Invalid YAML syntax');
-                }
-            }
-        });
+   }
+}
+
+
     function containsNull(obj) {
             for (const key in obj) {
                 if (obj[key] === null) {
@@ -257,7 +280,7 @@ function postMessageFromFlutter(yamlContent) {
   const dragIcon = document.createElement('span');
   dragIcon.classList.add('drag-icon');
   dragIcon.innerHTML = '≡'; // Unicode for the drag icon
-  dragIcon.style.marginLeft = '8px'; // Add 8px space between drag icon and checkbox
+  dragIcon.style.marginLeft = '12px'; // Add 8px space between drag icon and checkbox
   dragIcon.style.marginRight = '8px'; // Add 8px space between drag icon and checkbox
   dragIcon.style.position = 'absolute';
   dragIcon.style.left = '0';
@@ -276,12 +299,12 @@ function postMessageFromFlutter(yamlContent) {
   // Create a wrapper div for the checkbox
   const checkboxWrapper = document.createElement('div');
   checkboxWrapper.classList.add('form-check'); // Bootstrap class for form check
-  checkboxWrapper.style.marginLeft = '8px'; // Add margin to ensure spacing with drag icon
+  checkboxWrapper.style.paddingLeft = '0.5rem !important'; // Add margin to ensure spacing with drag icon
 
   // Create a checkbox element
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
-  checkbox.style.marginLeft = '8px';
+  checkbox.style.marginLeft = '0px';
   checkbox.classList.add('form-check-input'); // Bootstrap class for form check input
   checkbox.id = `checkbox-${Date.now()}`; // Unique ID for the checkbox
   checkbox.addEventListener('change', checkForCheckedItems);
