@@ -1,0 +1,26 @@
+.loader {
+  width: 15px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: #250902;
+  box-shadow: #250902 -20px 0px, #250902 20px 0px;
+  animation: l18 1.2s infinite;
+}
+
+@keyframes l18 {
+  25% {
+    box-shadow: #250902 -15px -15px, #250902 15px 15px;
+  }
+
+  50% {
+    box-shadow: #250902 0px -20px, #250902 0px 20px;
+  }
+
+  75% {
+    box-shadow: #250902 15px -15px, #250902 -15px 15px;
+  }
+
+  100% {
+    box-shadow: #250902 20px 0px, #250902 -20px 0px;
+  }
+}
