@@ -58,7 +58,7 @@ class MaestroThemeHelper {
 
   static void init() async{
     if(kIsWeb){
-      String mode = html.window.localStorage[''] ?? 'DARK';
+      String mode = (html.window.localStorage['theme'] ?? 'DARK').toUpperCase();
       if(mode == 'DARK'){
         themeMode.value = ThemeMode.dark;
       }else{
