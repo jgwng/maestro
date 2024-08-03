@@ -22,3 +22,8 @@ clean:
 	@flutter clean
 	@echo "Flutter pub get..."
 	@flutter pub get
+
+hosting:
+	@echo "Hosting the Project"
+	@flutter build web --web-renderer canvaskit
+	@firebase deploy --only hosting
