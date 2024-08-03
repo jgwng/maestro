@@ -50,12 +50,12 @@ $(document).ready(function() {
         window.postMessage('LIGHT', '*');
         // set theme on button press
         localStorage.setItem("theme", "LIGHT");
-        $('body').removeClass('dark-mode');
+        $('html').attr("data-theme", "light");
    } else {
         console.log('Dark mode enabled');
          window.postMessage('DARK', '*');
         localStorage.setItem("theme", "DARK");
-        $('body').addClass('dark-mode');
+         $('html').attr("data-theme", "dark");
     }
    });
    let initMode = localStorage.getItem('theme');

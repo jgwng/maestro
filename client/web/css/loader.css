@@ -45,6 +45,7 @@
   user-select: none;
   cursor: pointer;
   overflow: hidden;
+  transition: all var(--transition);
 }
 
 /* Svg styles */
@@ -55,7 +56,7 @@
 }
 .switch .moon {
   width: 18px;
-  fill: var(--color-gray);
+  fill: white; /* Changed this line */
   opacity: 1;
 }
 
@@ -114,7 +115,7 @@
   height: 25px;
   border-radius: 50%;
   left: 0;
-  background-color: var(--color-darkGray);
+  background-color: transparent; /* Changed this line */
   border: 1px solid var(--color-darkGray);
   transition: var(--transition500);
   box-shadow: 1px 1px 20px 3px var(--color-darkGray);
@@ -133,9 +134,9 @@
 
 .switch .circle:checked {
   left: calc(100% - 24px);
-  background: white;
-  border-color: white;
-  box-shadow: 1px 1px 30px 12px white;
+  background: transparent; /* Changed this line */
+  border-color: transparent; /* Changed this line */
+  box-shadow: none; /* Changed this line */
 }
 
 .switch:has(.circle:checked) > .sun {

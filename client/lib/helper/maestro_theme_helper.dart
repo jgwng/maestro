@@ -33,7 +33,7 @@ class MaestroThemeHelper {
   );
   static final ThemeData dark = ThemeData(
     textTheme: textTheme,
-    scaffoldBackgroundColor: const Color.fromRGBO(18, 18, 18, 1),
+    scaffoldBackgroundColor: const Color(0xFF292A2D),
     buttonTheme: const ButtonThemeData(
         buttonColor: Colors.white,
         textTheme: ButtonTextTheme.normal,
