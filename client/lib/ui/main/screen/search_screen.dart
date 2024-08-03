@@ -1,4 +1,5 @@
 
+import 'package:client/helper/maestro_theme_helper.dart';
 import 'package:client/util/semantic_identifier.dart';
 import 'package:client/util/test_util.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,13 @@ class _SearchScreenState extends State<SearchScreen>  with AutomaticKeepAliveCli
       body: Column(
         children: [
           searchBar(),
+          ElevatedButton(
+              onPressed: () {
+                MaestroThemeHelper.change();
+              },
+              child: const Text(
+                '모드 변경',
+                textAlign: TextAlign.center,)),
           const SizedBox(
             height: 12,
           ),

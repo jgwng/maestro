@@ -43,6 +43,25 @@ $(document).ready(function() {
     $('#myModal').modal('show');
   });
 
+   const darkModeSwitch = $('#darkModeSwitch');
+   darkModeSwitch.on('change', function() {
+   if (darkModeSwitch.is(':checked')) {
+        console.log('Dark mode disabled');
+        window.postMessage('LIGHT', '*');
+        // set theme on button press
+        localStorage.setItem("theme", "LIGHT");
+        $('body').removeClass('dark-mode');
+   } else {
+        console.log('Dark mode enabled');
+         window.postMessage('DARK', '*');
+        localStorage.setItem("theme", "DARK");
+        $('body').addClass('dark-mode');
+    }
+   });
+   let initMode = localStorage.getItem('theme');
+   let isLightMode = initMode == "LIGHT";
+   darkModeSwitch.prop('checked', isLightMode).trigger('change');
+
   // Handle confirm download button click
   $('#confirmDownloadBtn').on('click', function() {
     const filenameInput = $('#filenameInput').val().trim();
@@ -52,7 +71,11 @@ $(document).ready(function() {
   });
 });
 
-
+function toggleDarkMode(theme){
+    const darkModeSwitch = $('#darkModeSwitch');
+    let darkModeTheme = (theme == 'LIGHT');
+    darkModeSwitch.prop('checked', darkModeTheme).trigger('change');
+}
 
 function createYamlFile(filename) {
   // Collect checked items from the message list

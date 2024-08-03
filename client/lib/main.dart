@@ -1,4 +1,5 @@
 import 'package:client/core/maestro_routes.dart';
+import 'package:client/helper/maestro_theme_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:client/init_setting.dart';
 import 'package:get/get.dart';
@@ -14,16 +15,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-        title: '마에스트로 패드',
-        navigatorKey: navigatorKey,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        getPages: AppPages.pages,
-        initialRoute: AppRoutes.home,
-    );
+    return ValueListenableBuilder(
+        valueListenable: MaestroThemeHelper.themeMode,
+        builder: (context,mode,child){
+          return GetMaterialApp(
+            title: '마에스트로 패드',
+            navigatorKey: navigatorKey,
+            darkTheme: MaestroThemeHelper.dark,
+            theme: MaestroThemeHelper.light,
+            themeMode: mode,
+            getPages: AppPages.pages,
+            initialRoute: AppRoutes.home,
+          );
+        });
   }
 }
 

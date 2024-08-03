@@ -1,3 +1,4 @@
+import 'package:client/helper/maestro_theme_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -8,6 +9,7 @@ Future<void> initAppSetting() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
 
+  MaestroThemeHelper.init();
   MaestroTestHttps.setBaseSetting();
   if (kIsWeb) {
     html.document.onContextMenu.listen((event) => event.preventDefault());

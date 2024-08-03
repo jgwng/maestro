@@ -54,18 +54,28 @@ body {
   width: 100%;
   height: 60px;
   background-color: #250902;
-  color: #EDF2EF;
+
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding-left: 40px;
-  font-size: 18px;
-  font-weight: 700;
+  padding-right: 40px;
+
   font-style: bold;
+  justify-content: space-between;
   flex-shrink: 0; /* Prevents header from shrinking */
-  font-family: 'SUITE', sans-serif;
 }
 
+.header p{
+  color: #EDF2EF;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 700;
+  justify-content: center;
+  font-family: 'SUITE', sans-serif;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
 #messageListContainer {
   flex: 1;
   display: flex;
