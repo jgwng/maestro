@@ -86,9 +86,9 @@ class MaestroThemeHelper {
         break;
       default:
     }
-    if(kIsWeb){
-      String theme = themeMode.value.name.toUpperCase();
-      js.context.callMethod('toggleDarkMode', [theme]);
-    }
+    // if(kIsWeb){
+    //   String theme = themeMode.value.name.toUpperCase();
+    //   js.context.callMethod('toggleDarkMode', [theme]);
+    // }
   }
 }

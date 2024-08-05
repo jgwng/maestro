@@ -47,13 +47,13 @@ $(document).ready(function() {
    darkModeSwitch.on('change', function() {
    if (darkModeSwitch.is(':checked')) {
         console.log('Dark mode disabled');
-        window.postMessage('LIGHT', '*');
+//        window.postMessage('LIGHT', '*');
         // set theme on button press
         localStorage.setItem("theme", "LIGHT");
         $('html').attr("data-theme", "light");
    } else {
         console.log('Dark mode enabled');
-         window.postMessage('DARK', '*');
+//         window.postMessage('DARK', '*');
         localStorage.setItem("theme", "DARK");
          $('html').attr("data-theme", "dark");
     }
