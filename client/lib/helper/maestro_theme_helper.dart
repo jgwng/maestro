@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as html;
-import 'package:universal_html/js.dart' as js;
 class MaestroThemeHelper {
   static final MaestroThemeHelper instance = MaestroThemeHelper._internal();
   static ValueNotifier<ThemeMode> themeMode = ValueNotifier(ThemeMode.light);

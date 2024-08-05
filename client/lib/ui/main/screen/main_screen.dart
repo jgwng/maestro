@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:client/ui/main/screen/favorite_screen.dart';
 import 'package:client/ui/main/screen/search_screen.dart';
-import 'package:get/get.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

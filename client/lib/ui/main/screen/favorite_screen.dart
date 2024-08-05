@@ -2,7 +2,6 @@ import 'package:client/business_logic/bloc/favorite_bloc.dart';
 import 'package:client/business_logic/state/favorite_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:client/ui/main/widget/document_item.dart';
 
 class FavoriteScreen extends StatefulWidget{
