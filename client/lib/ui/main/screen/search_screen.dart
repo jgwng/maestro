@@ -1,11 +1,13 @@
 
+import 'package:client/business_logic/bloc/search_bloc.dart';
+import 'package:client/business_logic/event/search_event.dart';
+import 'package:client/business_logic/state/search_state.dart';
 import 'package:client/helper/maestro_theme_helper.dart';
 import 'package:client/util/semantic_identifier.dart';
 import 'package:client/util/test_util.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:client/ui/main/widget/document_item.dart';
-import 'package:client/business_logic/search/search_controller.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -15,12 +17,16 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen>  with AutomaticKeepAliveClientMixin<SearchScreen>{
-  late SearchDocumentController controller;
+
+  late SearchBloc _searchBloc;
+
+  final TextEditingController searchController = TextEditingController();
+  final FocusNode searchNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    controller = Get.find<SearchDocumentController>();
+    _searchBloc = BlocProvider.of<SearchBloc>(context);
   }
 
   @override
@@ -52,15 +58,21 @@ class _SearchScreenState extends State<SearchScreen>  with AutomaticKeepAliveCli
         children: [
           Expanded(
             child: TextField(
-              controller: controller.fieldController,
-              focusNode: controller.node,
+              controller: searchController,
+              focusNode: searchNode,
               onSubmitted: (text) {
-                controller.onTapForSearch(isInit: true);
+                _searchBloc.add(FetchSearchResults(
+                    query: searchController.text,
+                    pageNo: 1
+                ));
               },
             ),
           ),
           ElevatedButton(
-              onPressed: () => controller.onTapForSearch(isInit: true),
+              onPressed: () => _searchBloc.add(FetchSearchResults(
+                  query: searchController.text,
+                  pageNo: 1
+              )),
               child: const Text('검색')).toSemantic(
               id: SemanticID.SEARCH_SCREEN_SEARCH_BUTTON,
           ),
@@ -71,60 +83,62 @@ class _SearchScreenState extends State<SearchScreen>  with AutomaticKeepAliveCli
 
   Widget searchResult() {
     return Expanded(
-      child: Obx(() {
-        if (controller.isSearching.isTrue) {
-          return const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              FittedBox(
-                child: SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: CircularProgressIndicator(),
+      child: BlocBuilder<SearchBloc,SearchState>(
+        builder: (context,state) {
+          if(state.results.isEmpty){
+            return const SizedBox();
+          }
+
+          if (state.isLoading == true) {
+            return const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                FittedBox(
+                  child: SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text('검색 중입니다')
-            ],
-          );
-        }
-        if (controller.searchWord.isEmpty) {
-          return const SizedBox();
-        }
-        return ListView.separated(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          itemBuilder: (ctx, index) {
-            if (index == controller.documents.length) {
-              if (controller.isEnd) {
-                return const SizedBox();
-              } else {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  controller.onTapForSearch(isInit: false);
-                });
-                return Container(
-                  width: 40,
-                  height: 40,
-                  alignment: Alignment.center,
-                  child: const CircularProgressIndicator(),
-                );
+                SizedBox(
+                  height: 20,
+                ),
+                Text('검색 중입니다')
+              ],
+            );
+          }
+          return ListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            itemBuilder: (ctx, index) {
+              if (index == state.results.length) {
+                if (state.hasReachedMax == true) {
+                  return const SizedBox();
+                } else {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _searchBloc.add(FetchSearchResults(query: searchController.text));
+                  });
+                  return Container(
+                    width: 40,
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(),
+                  );
+                }
               }
-            }
-            return SearchBookItem(
-                book: controller.documents[index],
-                onTapFavoriteItem: (result,item) => controller.onTapFavoriteItems(result,item),
-            );
+              return SearchBookItem(
+                book: state.results[index],
+              );
             },
-          itemCount: controller.documents.length + 1,
-          separatorBuilder: (ctx, index) {
-            return const SizedBox(
-              height: 40,
-            );
-          },
-        );
-      }),
+            itemCount: state.results.length,
+            separatorBuilder: (ctx, index) {
+              return const SizedBox(
+                height: 40,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 

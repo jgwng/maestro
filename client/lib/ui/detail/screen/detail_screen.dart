@@ -13,7 +13,6 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   late String viewType = '';
-  RxBool isFavorite = false.obs;
   String authors = '';
   String translators = '';
   late Book book;
@@ -23,7 +22,6 @@ class _DetailScreenState extends State<DetailScreen> {
     book = Get.arguments?['book'] ?? Book();
     viewType =
         'cached-image-detail-${(book.thumbnail ?? '').hashCode}-${DateTime.now().toIso8601String()}';
-    isFavorite.value = book.isFavorite == 'true'.toUpperCase();
     authors = (book.authors ?? []).join(',');
     translators = (book.translators ?? []).join(',');
   }
@@ -36,7 +34,7 @@ class _DetailScreenState extends State<DetailScreen> {
         if (didPop) {
           return;
         }
-        Get.back(result: isFavorite.value);
+        Get.back();
       },
       child: Scaffold(
         body: SafeArea(
@@ -47,7 +45,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   onPressed: (){
-                    Get.back(result: isFavorite.value);
+                    Get.back();
                   },
                   icon: const Icon(Icons.arrow_back_ios,size: 24,color: Colors.black,),
                 ),
@@ -68,7 +66,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       bottom: -8,
                       child: InkWell(
                         onTap: () {
-                          isFavorite.toggle();
+
                         },
                         child: Container(
                           width: 44,
@@ -82,7 +80,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                 onPressed: () {},
                                 color: Colors.black,
                                 icon: Icon(
-                                  isFavorite.isFalse
+                                  true
                                       ? Icons.favorite_outline_sharp
                                       : Icons.favorite_outlined,
                                   color: AppThemes.favoriteColor,

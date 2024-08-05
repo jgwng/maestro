@@ -12,7 +12,6 @@ class Book {
   String? title;
   List<String>? translators;
   String? url;
-  String isFavorite;
 
   Book(
       {
@@ -29,7 +28,6 @@ class Book {
         this.title,
         this.translators,
         this.url,
-        this.isFavorite = 'false'
       });
 
   factory Book.fromJson(Map<String, dynamic> json,{bool isFromDB = false}) {
@@ -48,7 +46,6 @@ class Book {
       title: json['title'],
       translators: (isFromDB == true) ? json['translators'].split(',') : json['translators'].cast<String>(),
       url: json['url'],
-      isFavorite: json['isFavorite'] ?? 'false'
     );
   }
 

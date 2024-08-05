@@ -1,7 +1,10 @@
+import 'package:client/business_logic/bloc/favorite_bloc.dart';
+import 'package:client/business_logic/bloc/search_bloc.dart';
 import 'package:client/core/maestro_routes.dart';
 import 'package:client/helper/maestro_theme_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:client/init_setting.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 void main() async{
@@ -15,7 +18,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<FavoriteBloc>(
+          create: (context) => FavoriteBloc(),
+        ),
+        BlocProvider<SearchBloc>(
+          create: (context) => SearchBloc(),
+        )
+      ],
+      child: ValueListenableBuilder(
         valueListenable: MaestroThemeHelper.themeMode,
         builder: (context,mode,child){
           return GetMaterialApp(
@@ -27,7 +39,8 @@ class MyApp extends StatelessWidget {
             getPages: AppPages.pages,
             initialRoute: AppRoutes.home,
           );
-        });
+        }),
+    );
   }
 }
 
