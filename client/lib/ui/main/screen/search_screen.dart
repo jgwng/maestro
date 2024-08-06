@@ -60,19 +60,11 @@ class _SearchScreenState extends State<SearchScreen>  with AutomaticKeepAliveCli
             child: TextField(
               controller: searchController,
               focusNode: searchNode,
-              onSubmitted: (text) {
-                _searchBloc.add(FetchSearchResults(
-                    query: searchController.text,
-                    pageNo: 1
-                ));
-              },
+              onSubmitted: (text) => onTapSearchBooks(),
             ),
           ),
           ElevatedButton(
-              onPressed: () => _searchBloc.add(FetchSearchResults(
-                  query: searchController.text,
-                  pageNo: 1
-              )),
+              onPressed: onTapSearchBooks,
               child: const Text('검색')).toSemantic(
               id: SemanticID.SEARCH_SCREEN_SEARCH_BUTTON,
           ),
@@ -89,7 +81,7 @@ class _SearchScreenState extends State<SearchScreen>  with AutomaticKeepAliveCli
             return const SizedBox();
           }
 
-          if (state.isLoading == true) {
+          if (state.isListLoading == true) {
             return const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,9 +107,7 @@ class _SearchScreenState extends State<SearchScreen>  with AutomaticKeepAliveCli
                 if (state.hasReachedMax == true) {
                   return const SizedBox();
                 } else {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    _searchBloc.add(FetchSearchResults(query: searchController.text));
-                  });
+                  _searchBloc.add(LoadMoreResults(query: searchController.text));
                   return Container(
                     width: 40,
                     height: 40,
@@ -130,7 +120,7 @@ class _SearchScreenState extends State<SearchScreen>  with AutomaticKeepAliveCli
                 book: state.results[index],
               );
             },
-            itemCount: state.results.length,
+            itemCount: state.results.length + 1,
             separatorBuilder: (ctx, index) {
               return const SizedBox(
                 height: 40,
@@ -142,6 +132,16 @@ class _SearchScreenState extends State<SearchScreen>  with AutomaticKeepAliveCli
     );
   }
 
+  void onTapSearchBooks(){
+    if(searchController.text.isEmpty){
+      return;
+    }
+
+    FocusScope.of(context).requestFocus(FocusNode());
+    _searchBloc.add(FetchSearchResults(
+      query: searchController.text,
+    ));
+  }
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;

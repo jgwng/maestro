@@ -3,24 +3,28 @@ import 'package:client/model/book.dart';
 class SearchState{
   final List<Book> results;
   final bool hasReachedMax;
-  final bool isLoading;
+  final bool isListLoading;
+  final bool isPaging;
 
   const SearchState({
     this.results = const [],
     this.hasReachedMax = false,
-    this.isLoading = false,
+    this.isListLoading = false,
+    this.isPaging = false,
   });
 
 
   SearchState copyWith({
     List<Book>? results,
     bool? hasReachedMax,
-    bool? isLoading,
+    bool? isListLoading,
+    bool? isPaging,
   }) {
     return SearchState(
       results: results ?? this.results,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-      isLoading: isLoading ?? this.isLoading,
+      isListLoading: isListLoading ?? this.isListLoading,
+      isPaging: isPaging ?? this.isPaging,
     );
   }
 

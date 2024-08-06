@@ -4,9 +4,8 @@ abstract class SearchEvent{
 
 class FetchSearchResults extends SearchEvent {
   final String query;
-  final int pageNo;
 
-  const FetchSearchResults({required this.query, this.pageNo = 1});
+  const FetchSearchResults({required this.query});
 
 }
 
