@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -69,10 +71,19 @@ class CachedImage extends StatelessWidget {
       placeholder: (_, url) => Container(
         width: width,
         height: height,
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           shape: isCircular ? BoxShape.circle : BoxShape.rectangle,
           borderRadius: (isCircular == false) ? (borderRadius ?? BorderRadius.zero) : null,
-          color: placeHolderColor ?? Colors.red,
+          color: placeHolderColor ?? Colors.grey![200],
+        ),
+        child:FittedBox(
+          alignment: Alignment.center,
+          child:  SizedBox(
+            width: width/2,
+            height: height/2,
+            child: const CircularProgressIndicator(),
+          ),
         ),
       ),
       errorWidget: (_, url, error) => Container(
@@ -81,8 +92,9 @@ class CachedImage extends StatelessWidget {
         decoration: BoxDecoration(
           shape: isCircular ? BoxShape.circle : BoxShape.rectangle,
           borderRadius: (isCircular == false) ? (borderRadius ?? BorderRadius.zero) : null,
-          color: placeHolderColor ?? Colors.red,
+          color: placeHolderColor ?? Colors.grey![200],
         ),
+        child: Icon(Icons.error,size: min(width,height)/2,),
       ),
     );
   }

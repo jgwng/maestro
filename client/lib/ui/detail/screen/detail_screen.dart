@@ -1,8 +1,12 @@
+import 'package:client/business_logic/bloc/favorite_bloc.dart';
+import 'package:client/business_logic/event/favorite_event.dart';
+import 'package:client/business_logic/state/favorite_state.dart';
 import 'package:client/core/maestro_resources.dart';
 import 'package:client/model/book.dart';
 import 'package:flutter/material.dart';
 import 'package:client/ui/widget/general_network_image.dart'
     if (dart.library.html) 'package:client/ui/widget/web_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -16,6 +20,8 @@ class _DetailScreenState extends State<DetailScreen> {
   String authors = '';
   String translators = '';
   late Book book;
+  late FavoriteBloc _favoriteBloc;
+
   @override
   void initState() {
     super.initState();
@@ -24,6 +30,7 @@ class _DetailScreenState extends State<DetailScreen> {
         'cached-image-detail-${(book.thumbnail ?? '').hashCode}-${DateTime.now().toIso8601String()}';
     authors = (book.authors ?? []).join(',');
     translators = (book.translators ?? []).join(',');
+    _favoriteBloc = BlocProvider.of<FavoriteBloc>(context);
   }
 
   @override
@@ -64,30 +71,34 @@ class _DetailScreenState extends State<DetailScreen> {
                     Positioned(
                       right: 12,
                       bottom: -8,
-                      child: InkWell(
-                        onTap: () {
-
-                        },
-                        child: Container(
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: const Color(0xFFFFFFFF),
-                              border: Border.all(color: const Color(0xFFD9D0E3))),
-                          child: Obx(
-                                () => IconButton(
-                                onPressed: () {},
-                                color: Colors.black,
-                                icon: Icon(
-                                  true
-                                      ? Icons.favorite_outline_sharp
-                                      : Icons.favorite_outlined,
-                                  color: AppThemes.favoriteColor,
-                                  size: 24,
-                                )),
-                          ),
-                        ),
+                      child: BlocBuilder<FavoriteBloc,FavoriteState>(
+                        builder: (context,state){
+                          bool isFavorite = state.favorites.contains(book);
+                          return InkWell(
+                            onTap: () {
+                              if(isFavorite){
+                                _favoriteBloc.add(RemoveFavoriteEvent(book));
+                              }else{
+                                _favoriteBloc.add(AddFavoriteEvent(book));
+                              }
+                            },
+                            child: Container(
+                              width: 44,
+                              height: 44,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: const Color(0xFFFFFFFF),
+                                  border: Border.all(color: const Color(0xFFD9D0E3))),
+                              child: Icon(
+                                isFavorite == false
+                                    ? Icons.favorite_outline_sharp
+                                    : Icons.favorite_outlined,
+                                color: AppThemes.favoriteColor,
+                                size: 24,
+                              ),
+                              ),
+                            );
+                        }
                       ),
                     )
                   ],
