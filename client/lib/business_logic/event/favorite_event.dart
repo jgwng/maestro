@@ -15,3 +15,9 @@ class RemoveFavoriteEvent extends FavoriteEvent{
 
   RemoveFavoriteEvent(this.item);
 }
+
+class AddFavoriteListEvent extends FavoriteEvent{
+  final List<Book> favoriteList;
+
+  AddFavoriteListEvent(this.favoriteList);
+}

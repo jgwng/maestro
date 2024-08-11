@@ -35,7 +35,7 @@ class MaestroDBHelper{
               thumbnail TEXT,
               title TEXT,
               translators TEXT,
-              url TEXT,
+              url TEXT
             )
           ''');
         },

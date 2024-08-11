@@ -1,5 +1,6 @@
 import 'package:client/business_logic/bloc/favorite_bloc.dart';
 import 'package:client/business_logic/state/favorite_state.dart';
+import 'package:client/core/maestro_resources.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:client/ui/main/widget/document_item.dart';
@@ -24,29 +25,56 @@ class _FavoriteScreenState extends State<FavoriteScreen> with AutomaticKeepAlive
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<FavoriteBloc,FavoriteState>(
-        builder: (context,state){
-          if(state.favorites.isEmpty){
-            return const SizedBox();
-          }
-          return Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              itemBuilder: (ctx, index) {
-                return SearchBookItem(
-                  book: state.favorites[index],
-                );
-              },
-              itemCount: state.favorites.length,
-              separatorBuilder: (ctx, index) {
-                return const SizedBox(
-                  height: 40,
-                );
-              },
-            ),
-          );
-        },
+      body:SafeArea(
+        child: BlocBuilder<FavoriteBloc, FavoriteState>(
+          builder: (context, state) {
+            if (state.favorites.isEmpty) {
+              return  Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'asset/image/empty_favorite.png',
+                      width: 280,
+                      height: 280,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    const Text(
+                      '즐겨찾기한 도서가 없습니다.',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: AppFonts.bold),
+
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            // Return the ListView if there are favorites
+            return Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                itemBuilder: (ctx, index) {
+                  return SearchBookItem(
+                    book: state.favorites[index],
+                  );
+                },
+                itemCount: state.favorites.length,
+                separatorBuilder: (ctx, index) {
+                  return const SizedBox(
+                    height: 40,
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }

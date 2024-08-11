@@ -1,6 +1,12 @@
+import 'package:client/business_logic/bloc/favorite_bloc.dart';
+import 'package:client/business_logic/event/favorite_event.dart';
+import 'package:client/helper/maestro_db_helper.dart';
+import 'package:client/model/book.dart';
 import 'package:flutter/material.dart';
 import 'package:client/ui/main/screen/favorite_screen.dart';
 import 'package:client/ui/main/screen/search_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -17,6 +23,13 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   void initState(){
     super.initState();
     tabController = TabController(vsync: this,length: 2);
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) async{
+          List<Book> favoriteList = await MaestroDBHelper().getDB();
+          FavoriteBloc favoriteBloc = BlocProvider.of<FavoriteBloc>(Get.context!);
+          favoriteBloc.add(AddFavoriteListEvent(favoriteList));
+    });
+
   }
 
   @override

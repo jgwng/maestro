@@ -30,6 +30,7 @@ flutter:
   uses-material-design: true
   assets:
     - .env
+    - asset/image/
   fonts:
     - family: 'SuiteBold'
       fonts:

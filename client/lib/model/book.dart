@@ -57,7 +57,7 @@ class Book {
     data['isbn'] = isbn;
     data['price'] = price;
     data['publisher'] = publisher;
-    data['sale_price'] = salePrice;
+    data['salesPrice'] = salePrice;
     data['status'] = status;
     data['thumbnail'] = thumbnail;
     data['title'] = title;
