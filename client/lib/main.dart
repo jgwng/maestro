@@ -1,3 +1,4 @@
+import 'package:client/business_logic/bloc/auth_bloc.dart';
 import 'package:client/business_logic/bloc/favorite_bloc.dart';
 import 'package:client/business_logic/bloc/search_bloc.dart';
 import 'package:client/core/maestro_routes.dart';
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<SearchBloc>(
           create: (context) => SearchBloc(),
+        ),
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(),
         )
       ],
       child: ValueListenableBuilder(
@@ -37,7 +41,7 @@ class MyApp extends StatelessWidget {
             theme: MaestroThemeHelper.light,
             themeMode: mode,
             getPages: AppPages.pages,
-            initialRoute: AppRoutes.home,
+            initialRoute: AppRoutes.login,
           );
         }),
     );
