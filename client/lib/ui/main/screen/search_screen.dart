@@ -35,13 +35,7 @@ class _SearchScreenState extends State<SearchScreen>  with AutomaticKeepAliveCli
       body: Column(
         children: [
           searchBar(),
-          ElevatedButton(
-              onPressed: () {
-                MaestroThemeHelper.change();
-              },
-              child: const Text(
-                '모드 변경',
-                textAlign: TextAlign.center,)),
+
           const SizedBox(
             height: 12,
           ),

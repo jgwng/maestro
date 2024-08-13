@@ -7,6 +7,8 @@ class AppFonts {
   static const List<String> fontFamilyFallback = [
     'Noto Sans SC',
     "Noto Sans Symbols",
+    bold,
+    medium,
     AppFonts.emoji
   ];
   static const String emojiUrl =
@@ -18,7 +20,10 @@ class AppThemes {
   static const Color textColor = Color(0xff222222);
   static const Color backgroundColor = Color(0xfffffafa);
   static const Color buttonColor = Color(0xff0BCE83);
-  static const Color favoriteColor = Color(0xff9586A8);
+  static const Color favoriteColor = Color(0xffff3a30);
+
+  static const Color pointColor = Color.fromRGBO(28 ,28, 28,  1.0);
+  static const Color unSelectedColor = Color.fromRGBO(234 ,235, 237,  1.0);
 
   static const Color disableColor = Color.fromRGBO(178, 178, 178, 1.0);
   static const Color noticeColor = Color.fromARGB(255, 77, 82, 86);

@@ -8,6 +8,9 @@ import 'package:client/ui/main/screen/search_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../../core/maestro_resources.dart';
+import '../../../helper/maestro_theme_helper.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -15,21 +18,31 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin{
+class _MainScreenState extends State<MainScreen>{
 
-  late TabController tabController;
+  int _selectedIndex = 0;
+
+
+  final List<Widget> _pages = <Widget>[
+    const SearchScreen(),
+    const FavoriteScreen()
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   void initState(){
     super.initState();
-    tabController = TabController(vsync: this,length: 2);
     WidgetsBinding.instance
         .addPostFrameCallback((_) async{
           List<Book> favoriteList = await MaestroDBHelper().getDB();
           FavoriteBloc favoriteBloc = BlocProvider.of<FavoriteBloc>(Get.context!);
           favoriteBloc.add(AddFavoriteListEvent(favoriteList));
     });
-
   }
 
   @override
@@ -38,27 +51,66 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
       body: SafeArea(
         child: Column(
           children: [
-            TabBar(
-              onTap: (index){
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              controller: tabController,
-              tabs: const [
-                Tab(text: '검색'),
-                Tab(text: '즐겨찾기'),
-              ],
-            ),
+            ValueListenableBuilder(
+                valueListenable: MaestroThemeHelper.themeMode,
+                builder:(context,mode,child){
+                  bool isDark = MaestroThemeHelper.isDark;
+                  return Container(
+                    height: 56,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    alignment: Alignment.centerRight,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: (){
+                            MaestroThemeHelper.change();
+                          },
+                          splashColor: Colors.transparent,
+                          child:  Icon(
+                            isDark ? Icons.light_mode : Icons.dark_mode,
+                            color: isDark ? AppThemes.unSelectedColor  : AppThemes.pointColor,
+                            semanticLabel: isDark ? 'DARK' : 'LIGHT',
+                            size: 30,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        InkWell(
+                          onTap: (){},
+                          child:  Icon(
+                            Icons.logout,
+                            color: isDark ? AppThemes.unSelectedColor  : AppThemes.pointColor,
+                            size: 30,),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
             Expanded(
-              child: TabBarView(
-                controller: tabController,
-                children: const [
-                  SearchScreen(),
-                  FavoriteScreen()
-                ],
-              ),
+              child: _pages.elementAt(_selectedIndex),
             )
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search,size: 30),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite,size: 30,),
+            label: '',
+          ),
+        ],
+        currentIndex: _selectedIndex, // 지정 인덱스로 이동
+        selectedItemColor: AppThemes.pointColor,
+        unselectedItemColor: AppThemes.unSelectedColor,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        onTap: _onItemTapped, // 선언했던 onItemTapped
       ),
     );
   }

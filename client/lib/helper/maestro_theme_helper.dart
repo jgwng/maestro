@@ -1,3 +1,4 @@
+import 'package:client/core/maestro_resources.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as html;
@@ -12,7 +13,7 @@ class MaestroThemeHelper {
   static final ThemeData light = ThemeData(
     textTheme: textTheme,
     scaffoldBackgroundColor: const Color.fromRGBO(255,255,255,1.0),
-
+    fontFamilyFallback: AppFonts.fontFamilyFallback,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(Colors.black),
@@ -32,6 +33,7 @@ class MaestroThemeHelper {
   );
   static final ThemeData dark = ThemeData(
     textTheme: textTheme,
+    fontFamilyFallback: AppFonts.fontFamilyFallback,
     scaffoldBackgroundColor: const Color(0xFF292A2D),
     buttonTheme: const ButtonThemeData(
         buttonColor: Colors.white,
