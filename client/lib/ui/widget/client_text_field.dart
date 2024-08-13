@@ -13,7 +13,7 @@ class ClientTFT extends StatefulWidget {
   final Function(String)? onChanged;
   final Function(String)? onFieldSubmit;
 
-  const ClientTFT({required this.labelText, this.validator,this.controller,this.focusNode,this.onFieldSubmit,
+  const ClientTFT({super.key, required this.labelText, this.validator,this.controller,this.focusNode,this.onFieldSubmit,
     this.onChanged, this.suffixIcon, this.obscureText = false, this.keyboardType});
 
   @override
@@ -93,8 +93,8 @@ class _ClientTFTState extends State<ClientTFT>{
                         )
                     ],
                   ),
-                  labelStyle: AppThemes.textTheme.bodyText1!.copyWith(color: Colors.grey),
-                  errorStyle: AppThemes.textTheme.bodyText2!.copyWith(color: Colors.red),
+                  labelStyle: AppThemes.textTheme.bodyLarge!.copyWith(color: Colors.grey),
+                  errorStyle: AppThemes.textTheme.bodyMedium!.copyWith(color: Colors.red),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
                     borderSide: const BorderSide(

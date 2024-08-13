@@ -33,37 +33,37 @@ class AppThemes {
   static const mobileBackgroundColor = Color.fromRGBO(238, 238, 241, 1.0);
 
   static const TextTheme textTheme = TextTheme(
-    button: TextStyle(
+    labelLarge: TextStyle(
         fontSize: 20.0,
         fontWeight: FontWeight.w500,
         fontFamily: 'NotoMedium',
         color: Colors.white),
-    headline1: TextStyle(
+    displayLarge: TextStyle(
         fontSize: 24.0,
         fontWeight: FontWeight.w500,
         fontFamily: 'NotoMedium',
         color: buttonTextColor),
-    headline2: TextStyle(
+    displayMedium: TextStyle(
         fontSize: 20.0,
         fontWeight: FontWeight.w500,
         fontFamily: 'NotoMedium',
         color: buttonTextColor),
-    subtitle1: TextStyle(
+    titleMedium: TextStyle(
         fontSize: 16.0,
         fontWeight: FontWeight.w500,
         fontFamily: 'NotoMedium',
         color: buttonTextColor),
-    subtitle2: TextStyle(
+    titleSmall: TextStyle(
         fontSize: 18.0,
         fontWeight: FontWeight.w500,
         fontFamily: 'NotoMedium',
         color: buttonTextColor),
-    bodyText1: TextStyle(
+    bodyLarge: TextStyle(
         fontSize: 14.0,
         fontWeight: FontWeight.w500,
         fontFamily: 'NotoMedium',
         color: buttonTextColor),
-    bodyText2: TextStyle(
+    bodyMedium: TextStyle(
         fontSize: 12.0,
         fontWeight: FontWeight.w500,
         fontFamily: 'NotoMedium',

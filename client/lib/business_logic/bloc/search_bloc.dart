@@ -5,7 +5,7 @@ import 'package:client/network/document_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  SearchBloc() : super(SearchState()) {
+  SearchBloc() : super(const SearchState()) {
     on<FetchSearchResults>(_onFetchSearchResults);
     on<LoadMoreResults>(_onLoadMoreResults);
 

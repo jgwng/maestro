@@ -3,7 +3,7 @@ import 'package:client/helper/maestro_theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class ClientButton extends StatelessWidget{
-  ClientButton({
+  const ClientButton({super.key, 
     required this.onPressed,
     required this.buttonText,this.vMargin,this.hMargin,
     this.isNetworking});

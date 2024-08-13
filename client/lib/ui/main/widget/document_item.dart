@@ -13,7 +13,7 @@ import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 
 class SearchBookItem extends StatelessWidget {
-  SearchBookItem({super.key, required this.book});
+  const SearchBookItem({super.key, required this.book});
 
   final Book book;
 

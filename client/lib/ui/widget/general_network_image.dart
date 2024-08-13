@@ -75,7 +75,7 @@ class CachedImage extends StatelessWidget {
         decoration: BoxDecoration(
           shape: isCircular ? BoxShape.circle : BoxShape.rectangle,
           borderRadius: (isCircular == false) ? (borderRadius ?? BorderRadius.zero) : null,
-          color: placeHolderColor ?? Colors.grey![200],
+          color: placeHolderColor ?? Colors.grey[200],
         ),
         child:FittedBox(
           alignment: Alignment.center,
@@ -92,7 +92,7 @@ class CachedImage extends StatelessWidget {
         decoration: BoxDecoration(
           shape: isCircular ? BoxShape.circle : BoxShape.rectangle,
           borderRadius: (isCircular == false) ? (borderRadius ?? BorderRadius.zero) : null,
-          color: placeHolderColor ?? Colors.grey![200],
+          color: placeHolderColor ?? Colors.grey[200],
         ),
         child: Icon(Icons.error,size: min(width,height)/2,),
       ),

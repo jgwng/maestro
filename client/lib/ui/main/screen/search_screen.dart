@@ -2,7 +2,6 @@
 import 'package:client/business_logic/bloc/search_bloc.dart';
 import 'package:client/business_logic/event/search_event.dart';
 import 'package:client/business_logic/state/search_state.dart';
-import 'package:client/helper/maestro_theme_helper.dart';
 import 'package:client/util/semantic_identifier.dart';
 import 'package:client/util/test_util.dart';
 import 'package:flutter/material.dart';

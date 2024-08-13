@@ -13,7 +13,7 @@ abstract class AppPages {
   static final pages = [
     GetPage(
       name: AppRoutes.login,
-      page: () => LoginScreen()
+      page: () => const LoginScreen()
     ),
     GetPage(
       name: AppRoutes.home,
