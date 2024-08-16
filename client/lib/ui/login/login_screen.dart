@@ -57,18 +57,18 @@ class _LoginScreenState extends State<LoginScreen>{
                 height: 24,
               ),
               ClientTFT(
-                labelText: '아이디',
+                hintText: '아이디',
                 controller: idController,
                 focusNode: idNode,
                 onChanged: (String text){},
                 onFieldSubmit: (String? text) => pwNode.requestFocus(),
               ),
               ClientTFT(
-                  labelText: '비밀번호',
+                  hintText: '비밀번호',
                   controller: pwController,
                   focusNode: pwNode,
                   onChanged: (String text) {},
-                  obscureText: true,
+                  mode: SuffixMode.obscure,
                   onFieldSubmit: (String? text){}),
               const SizedBox(
                 height: 20,

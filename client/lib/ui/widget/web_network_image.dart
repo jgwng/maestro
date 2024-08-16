@@ -106,7 +106,7 @@ class _WebNetworkImageState extends State<CachedImage> with SingleTickerProvider
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        print('onTAp');
+
       },
       child: SizedBox(
         width: widget.width,

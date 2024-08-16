@@ -30,17 +30,10 @@ extension WidgetExtension on Widget {
         message: id,
         child: Listener(
           onPointerDown: (event) async{
-            // Check if right mouse button clicked
             if (event.kind == PointerDeviceKind.mouse && event.buttons == kSecondaryMouseButton) {
-
               js.context.callMethod('mouseRightClick', ['text',(data){
                 print('data : $data');
               }]);
-
-
-
-              // print('right mouse click');
-              // await Clipboard.setData(const ClipboardData(text: "Text to be copied"));
             }
           },
           child: this,

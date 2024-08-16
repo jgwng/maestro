@@ -29,15 +29,22 @@ class MaestroThemeHelper {
       buttonTheme: const ButtonThemeData(
         buttonColor: Colors.black,
         textTheme: ButtonTextTheme.normal,
-      )
+      ),
+    textSelectionTheme: const TextSelectionThemeData(
+      selectionHandleColor: Color(0xff222222)
+    )
+
   );
   static final ThemeData dark = ThemeData(
     textTheme: textTheme,
     fontFamilyFallback: AppFonts.fontFamilyFallback,
-    scaffoldBackgroundColor: const Color(0xFF292A2D),
+    scaffoldBackgroundColor: const Color.fromRGBO(60, 60, 60, 1.0),
     buttonTheme: const ButtonThemeData(
         buttonColor: Colors.white,
         textTheme: ButtonTextTheme.normal,
+    ),
+    textSelectionTheme: const TextSelectionThemeData(
+          selectionHandleColor:  Color.fromRGBO(239, 241, 243, 1.0)
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(

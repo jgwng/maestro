@@ -2,8 +2,7 @@
 import 'package:client/business_logic/bloc/search_bloc.dart';
 import 'package:client/business_logic/event/search_event.dart';
 import 'package:client/business_logic/state/search_state.dart';
-import 'package:client/util/semantic_identifier.dart';
-import 'package:client/util/test_util.dart';
+import 'package:client/ui/widget/client_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:client/ui/main/widget/document_item.dart';
@@ -31,37 +30,38 @@ class _SearchScreenState extends State<SearchScreen>  with AutomaticKeepAliveCli
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          searchBar(),
+      body: InkWell(
+        splashColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        focusColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        splashFactory: NoSplash.splashFactory,
+        onTap: ()=> FocusScope.of(context).unfocus(),
+        child: Column(
+          children: [
+            searchBar(),
 
-          const SizedBox(
-            height: 12,
-          ),
-          searchResult()
-        ],
+            const SizedBox(
+              height: 12,
+            ),
+            searchResult()
+          ],
+        ),
       ),
     );
   }
 
   Widget searchBar() {
-    return SizedBox(
+    return Container(
       height: 60,
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: searchController,
-              focusNode: searchNode,
-              onSubmitted: (text) => onTapSearchBooks(),
-            ),
-          ),
-          ElevatedButton(
-              onPressed: onTapSearchBooks,
-              child: const Text('검색')).toSemantic(
-              id: SemanticID.SEARCH_SCREEN_SEARCH_BUTTON,
-          ),
-        ],
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: ClientTFT(
+        hintText: '검색어를 입력해주세요',
+        controller: searchController,
+        focusNode: searchNode,
+        onFieldSubmit: (text) => onTapSearchBooks(),
+        setPadding: false,
+        mode: SuffixMode.search,
       ),
     );
   }

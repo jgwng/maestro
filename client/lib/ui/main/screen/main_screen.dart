@@ -18,10 +18,8 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen>{
-
+class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-
 
   final List<Widget> _pages = <Widget>[
     const SearchScreen(),
@@ -35,13 +33,12 @@ class _MainScreenState extends State<MainScreen>{
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) async{
-          List<Book> favoriteList = await MaestroDBHelper().getDB();
-          FavoriteBloc favoriteBloc = BlocProvider.of<FavoriteBloc>(Get.context!);
-          favoriteBloc.add(AddFavoriteListEvent(favoriteList));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      List<Book> favoriteList = await MaestroDBHelper().getDB();
+      FavoriteBloc favoriteBloc = BlocProvider.of<FavoriteBloc>(Get.context!);
+      favoriteBloc.add(AddFavoriteListEvent(favoriteList));
     });
   }
 
@@ -53,7 +50,7 @@ class _MainScreenState extends State<MainScreen>{
           children: [
             ValueListenableBuilder(
                 valueListenable: MaestroThemeHelper.themeMode,
-                builder:(context,mode,child){
+                builder: (context, mode, child) {
                   bool isDark = MaestroThemeHelper.isDark;
                   return Container(
                     height: 56,
@@ -63,26 +60,31 @@ class _MainScreenState extends State<MainScreen>{
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         InkWell(
-                          onTap: (){
+                          onTap: () {
                             MaestroThemeHelper.change();
                           },
                           splashColor: Colors.transparent,
-                          child:  Icon(
+                          child: Icon(
                             isDark ? Icons.light_mode : Icons.dark_mode,
-                            color: isDark ? AppThemes.unSelectedColor  : AppThemes.pointColor,
+                            color: isDark
+                                ? AppThemes.unSelectedColor
+                                : AppThemes.pointColor,
                             semanticLabel: isDark ? 'DARK' : 'LIGHT',
-                            size: 30,
+                            size: 32,
                           ),
                         ),
                         const SizedBox(
-                          width: 4,
+                          width: 8,
                         ),
                         InkWell(
-                          onTap: (){},
-                          child:  Icon(
+                          onTap: () {},
+                          child: Icon(
                             Icons.logout,
-                            color: isDark ? AppThemes.unSelectedColor  : AppThemes.pointColor,
-                            size: 30,),
+                            color: isDark
+                                ? AppThemes.unSelectedColor
+                                : AppThemes.pointColor,
+                            size: 32,
+                          ),
                         ),
                       ],
                     ),
@@ -97,15 +99,19 @@ class _MainScreenState extends State<MainScreen>{
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.search,size: 30),
+            icon: Icon(Icons.search, size: 30),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite,size: 30,),
+            icon: Icon(
+              Icons.favorite,
+              size: 30,
+            ),
             label: '',
           ),
         ],
-        currentIndex: _selectedIndex, // 지정 인덱스로 이동
+        currentIndex: _selectedIndex,
+        // 지정 인덱스로 이동
         selectedItemColor: AppThemes.pointColor,
         unselectedItemColor: AppThemes.unSelectedColor,
         showSelectedLabels: false,
