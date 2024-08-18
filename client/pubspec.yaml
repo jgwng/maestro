@@ -18,8 +18,11 @@ dependencies:
   get: 4.6.6
   flutter_bloc: 8.1.6
   dio: 5.4.0
+  hive: 2.2.3
+  hive_flutter: 1.1.0
   cached_network_image: ^3.3.1
   pointer_interceptor: ^0.10.1+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

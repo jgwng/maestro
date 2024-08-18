@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
             theme: MaestroThemeHelper.light,
             themeMode: mode,
             getPages: AppPages.pages,
-            initialRoute: AppRoutes.home,
+            initialRoute: AppRoutes.login,
           );
         }),
     );

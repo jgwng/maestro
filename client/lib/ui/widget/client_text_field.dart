@@ -1,6 +1,7 @@
 import 'package:client/core/maestro_resources.dart';
 import 'package:client/helper/maestro_theme_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ClientTFT extends StatefulWidget {
   final TextEditingController controller;
@@ -10,7 +11,7 @@ class ClientTFT extends StatefulWidget {
   final Icon? suffixIcon;
   final SuffixMode? mode;
   final bool? setPadding;
-  final FocusNode? focusNode;
+  final FocusNode focusNode;
   final Function(String)? onChanged;
   final Function(String)? onFieldSubmit;
 
@@ -21,7 +22,7 @@ class ClientTFT extends StatefulWidget {
       this.setPadding,
       this.validator,
       required this.controller,
-      this.focusNode,
+      required this.focusNode,
       this.onFieldSubmit,
       this.onChanged,
       this.suffixIcon,
@@ -39,6 +40,9 @@ class _ClientTFTState extends State<ClientTFT> {
     // TODO: implement initState
     super.initState();
     isObscureText = widget.mode == SuffixMode.obscure;
+    widget.focusNode.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -58,17 +62,9 @@ class _ClientTFTState extends State<ClientTFT> {
               keyboardType: widget.keyboardType ?? TextInputType.text,
               controller: widget.controller,
               focusNode: widget.focusNode ?? FocusNode(),
-              cursorColor: (isDark)
-                  ? const Color.fromRGBO(239, 241, 243, 1.0)
-                  : const Color(0xff222222),
+              cursorColor: Theme.of(context).primaryColorDark,
               validator: widget.validator,
-              style: TextStyle(
-                color: (isDark)
-                    ? const Color.fromRGBO(239, 241, 243, 1.0)
-                    : const Color(0xff222222),
-                fontFamily: AppFonts.medium,
-                fontSize: 16,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               onChanged: (text) {
                 setState(() {
@@ -84,8 +80,7 @@ class _ClientTFTState extends State<ClientTFT> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       suffixWidget(isDark),
-                      if ((widget.focusNode?.hasFocus ?? false) &&
-                          (widget.controller.text.isNotEmpty ?? false))
+                      if (showSuffixIcon == true)
                         IconButton(
                           onPressed: () {
                             setState(() {
@@ -97,52 +92,46 @@ class _ClientTFTState extends State<ClientTFT> {
                           },
                           icon: Icon(
                             Icons.cancel,
-                            color: (isDark)
-                                ? const Color.fromRGBO(239, 241, 243, 1.0)
-                                : const Color(0xff222222),
+                            color: Theme.of(context).primaryColorDark,
                           ),
                         )
                     ],
                   ),
                   hintText: widget.hintText,
-                  hintStyle: TextStyle(
-                    color: (isDark == true)
-                        ? const Color.fromRGBO(108, 108, 108, 1.0)
-                        : const Color.fromRGBO(108, 108, 108, 1.0),
-                    fontFamily: AppFonts.medium,
-                    fontSize: 16,
-                  ),
+                  hintStyle: Theme.of(context).textTheme.bodySmall,
                   labelStyle: AppThemes.textTheme.bodyLarge!
                       .copyWith(color: Colors.grey),
                   errorStyle: AppThemes.textTheme.bodyMedium!
                       .copyWith(color: Colors.red),
                   filled: true,
-                  fillColor: (isDark == true)
-                      ? const Color.fromRGBO(40, 40, 40, 1.0)
-                      : const Color.fromRGBO(234, 235, 237, 1.0),
-                  focusedBorder: fieldBorder(isDark),
-                  focusedErrorBorder: fieldBorder(isDark),
-                  disabledBorder: fieldBorder(isDark),
-                  enabledBorder: fieldBorder(isDark),
-                  border: fieldBorder(isDark)),
+                  fillColor: Theme.of(context).secondaryHeaderColor,
+                  focusedBorder: fieldBorder,
+                  focusedErrorBorder: fieldBorder,
+                  disabledBorder: fieldBorder,
+                  enabledBorder: fieldBorder,
+                  border: fieldBorder
+              ),
             ),
           );
         });
   }
 
-  OutlineInputBorder fieldBorder(bool isDark) {
+  OutlineInputBorder get fieldBorder {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(4),
       borderSide: BorderSide(
-          color: (isDark == true)
-              ? const Color.fromRGBO(40, 40, 40, 1.0)
-              : const Color.fromRGBO(237, 239, 246, 1.0)),
+          color: Theme.of(context).secondaryHeaderColor),
     );
   }
 
+  bool get showSuffixIcon => (widget.focusNode.hasFocus) &&
+      (widget.controller.text.isNotEmpty );
   Widget suffixWidget(bool isDark) {
     switch (widget.mode) {
       case SuffixMode.obscure:
+        if(showSuffixIcon == false){
+          return const SizedBox();
+        }
         return IconButton(
           onPressed: () {
             setState(() {

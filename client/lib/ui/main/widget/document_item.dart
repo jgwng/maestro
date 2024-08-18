@@ -56,21 +56,13 @@ class SearchBookItem extends StatelessWidget {
                         children: [
                           Text(
                             book.title ?? '',
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: AppFonts.bold),
+                            style: Theme.of(context).textTheme.displayMedium,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           Text(
                             (book.authors ?? []).join(','),
-                            style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: AppFonts.medium),
+                            style: Theme.of(context).textTheme.displaySmall,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           )

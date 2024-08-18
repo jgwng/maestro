@@ -41,14 +41,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> with AutomaticKeepAlive
                     const SizedBox(
                       height: 8,
                     ),
-                    const Text(
+                    Text(
                       '즐겨찾기한 도서가 없습니다.',
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: AppFonts.bold),
-
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ],
                 ),

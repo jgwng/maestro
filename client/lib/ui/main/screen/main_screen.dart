@@ -44,80 +44,77 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            ValueListenableBuilder(
-                valueListenable: MaestroThemeHelper.themeMode,
-                builder: (context, mode, child) {
-                  bool isDark = MaestroThemeHelper.isDark;
-                  return Container(
-                    height: 56,
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    alignment: Alignment.centerRight,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            MaestroThemeHelper.change();
-                          },
-                          splashColor: Colors.transparent,
-                          child: Icon(
-                            isDark ? Icons.light_mode : Icons.dark_mode,
-                            color: isDark
-                                ? AppThemes.unSelectedColor
-                                : AppThemes.pointColor,
-                            semanticLabel: isDark ? 'DARK' : 'LIGHT',
-                            size: 32,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: Icon(
-                            Icons.logout,
-                            color: isDark
-                                ? AppThemes.unSelectedColor
-                                : AppThemes.pointColor,
-                            size: 32,
-                          ),
-                        ),
-                      ],
+    return ValueListenableBuilder(
+        valueListenable: MaestroThemeHelper.themeMode,
+        builder: (context, mode, child) {
+          bool isDark = MaestroThemeHelper.isDark;
+          return Scaffold(
+            body: SafeArea(
+              child: Column(
+                children: [
+                Container(
+                height: 56,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        MaestroThemeHelper.change();
+                      },
+                      splashColor: Colors.transparent,
+                      child: Icon(
+                        isDark ? Icons.light_mode : Icons.dark_mode,
+                        color: isDark
+                            ? AppThemes.unSelectedColor
+                            : AppThemes.pointColor,
+                        semanticLabel: isDark ? 'DARK' : 'LIGHT',
+                        size: 32,
+                      ),
                     ),
-                  );
-                }),
-            Expanded(
-              child: _pages.elementAt(_selectedIndex),
-            )
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search, size: 30),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.favorite,
-              size: 30,
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Icon(
+                        Icons.logout,
+                        color: isDark
+                            ? AppThemes.unSelectedColor
+                            : AppThemes.pointColor,
+                        size: 32,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+                  Expanded(
+                    child: _pages.elementAt(_selectedIndex),
+                  )
+                ],
+              ),
             ),
-            label: '',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        // 지정 인덱스로 이동
-        selectedItemColor: AppThemes.pointColor,
-        unselectedItemColor: AppThemes.unSelectedColor,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        onTap: _onItemTapped, // 선언했던 onItemTapped
-      ),
-    );
+            bottomNavigationBar: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.search, size: 30),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.favorite,
+                    size: 30,
+                  ),
+                  label: '',
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              onTap: _onItemTapped, // 선언했던 onItemTapped
+            ),
+          );
+        });
   }
 }
